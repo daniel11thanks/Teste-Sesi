@@ -32,6 +32,7 @@
 - **Compilação e lint** a cada etapa (`dotnet build`, `npm run build`, `npm run lint`).
 - **Chamadas reais à API** (busca, filtros combinados, valores inválidos, 404) antes de usar no front-end.
 - **Comparação visual** com os prints do Figma, em 1440, 768 e 390 px, usando capturas do Chrome.
+- **Testes do back-end** (`backend/tests/`, xUnit, 63 testes) — e uma **verificação por mutação**: defeitos injetados de propósito no código (busca sem normalização, filtros ignorados, validação removida) para confirmar que os testes realmente falham quando deveriam.
 - **Testes automatizados de interface** (`frontend/e2e/`, com Chrome headless e axe-core) cobrindo busca, filtros combinados, contagem, limpar filtros, link direto, botão Voltar, estados de carregamento, erro e vazio, acessibilidade básica e ausência de rolagem horizontal em 390 px.
 - **Revisão do candidato** de todo o código antes de cada commit.
 

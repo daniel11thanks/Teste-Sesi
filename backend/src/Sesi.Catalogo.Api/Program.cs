@@ -78,3 +78,6 @@ app.MapCursos();
 app.MapFallbackToFile("index.html", opcoesEstaticas);
 
 app.Run();
+
+// Necessário para os testes de integração (WebApplicationFactory<Program>) acessarem o ponto de entrada.
+public partial class Program;

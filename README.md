@@ -62,8 +62,9 @@ Não há cadastro, edição ou exclusão de cursos (o enunciado dispensa) nem in
 | Front-end | **React 19**, **Vite 8**, React Router 7, CSS puro (variáveis CSS, sem biblioteca de UI) |
 | Fonte | Open Sans (arquivos fornecidos no teste) |
 | Empacotamento | Docker (build multi-estágio) e Docker Compose |
+| Testes do back-end | xUnit + `WebApplicationFactory` (integração HTTP com banco SQLite temporário) |
 | Testes de interface | Puppeteer (Chrome headless) |
-| Auditoria de acessibilidade | axe-core (WCAG 2.0/2.1/2.2 A e AA) |
+| Auditoria de acessibilidade | axe-core (WCAG 2.0/2.1/2.2 A e AA) e conferência da árvore de acessibilidade |
 | Qualidade de código | Oxlint |
 
 ## 3. Arquitetura da solução
@@ -98,6 +99,7 @@ Decisões principais:
 .
 ├── backend/
 │   ├── Sesi.Catalogo.sln
+│   ├── tests/Sesi.Catalogo.Api.Tests/   # 63 testes xUnit (API, busca, seed, migrations)
 │   └── src/Sesi.Catalogo.Api/
 │       ├── Program.cs                 # configuração, Swagger, arquivos estáticos, fallback da SPA
 │       ├── Endpoints/CursosEndpoints.cs
@@ -117,9 +119,10 @@ Decisões principais:
 │   │   ├── hooks/                     # useAsync, useDocumentTitle
 │   │   ├── styles/                    # tokens.css (cores/tipografia do Figma), base.css
 │   │   ├── utils/  data/
-│   ├── e2e/                           # testes de interface e de acessibilidade
+│   ├── e2e/                           # testes de interface, axe-core e árvore de acessibilidade
 │   └── scripts/                       # geração das ilustrações; otimização das imagens
 ├── docs/design/                       # extração do protótipo do Figma (textos, cores, interações, prints)
+├── docs/teste-leitor-de-tela.md       # roteiro do teste manual com leitor de tela
 ├── Dockerfile  docker-compose.yml  render.yaml
 ├── README.md  USO_DE_IA.md
 ```
@@ -164,7 +167,16 @@ Para gerar o front-end de produção e servi-lo pela própria API: `npm run buil
 
 ### 5.3 Testes e verificações
 
-Com a API e o `npm run dev` rodando (ou apontando `BASE_URL=http://localhost:8080` para o container) e o Google Chrome instalado (caminho alterável com `CHROME_PATH`):
+**Back-end** (não precisa de nada rodando; cada execução usa um banco SQLite temporário):
+
+```bash
+cd backend
+dotnet test           # 63 testes xUnit
+```
+
+Cobrem, pela API real em memória: listagem, pesquisa sem acentos/maiúsculas, cada filtro isolado e combinado, valores inválidos (400), detalhe, 404 em JSON, compressão, a normalização da busca, os mínimos do enunciado no seed (≥ 6 cursos, ≥ 3 categorias, ≥ 2 modalidades, ≥ 3 status), idempotência do seed e as migrations (incluindo a migration de dados aplicada a um banco “antigo”). Foi feita também uma verificação por mutação: defeitos injetados de propósito (busca sem normalização, filtros ignorados, 400 removido) são detectados pelos testes.
+
+**Front-end** — com a API e o `npm run dev` rodando (ou `BASE_URL=http://localhost:8080` apontando para o container) e o Google Chrome instalado (caminho alterável com `CHROME_PATH`):
 
 ```bash
 cd frontend
@@ -172,9 +184,10 @@ npm run lint          # análise estática
 npm run build         # build de produção
 npm run test:e2e      # ~50 verificações de interface (catálogo, detalhes, AVA)
 npm run test:a11y     # auditoria axe-core: 9 telas × desktop e celular
+npm run test:arvore   # árvore de acessibilidade: marcos, nomes, títulos e estados
 ```
 
-Os testes pressupõem o banco com o seed original (8 cursos). Os mesmos testes foram executados contra o container Docker.
+Os testes de interface pressupõem o banco com o seed original (8 cursos) e foram executados também contra o container Docker.
 
 ## 6. Configuração do banco
 
@@ -294,7 +307,8 @@ O Figma só traz o layout de **desktop**; os demais tamanhos foram definidos por
 - **Cards clicáveis:** no catálogo, o link está no título e se estende por todo o card, de modo que o nome acessível coincide com o texto visível.
 - **Contraste:** textos com contraste mínimo de 4,5:1 (a auditoria apontou e corrigimos o cargo dos depoimentos).
 - **Movimento:** respeita `prefers-reduced-motion`.
-- **Verificação:** auditoria automática com **axe-core** (WCAG 2.0/2.1/2.2 A e AA e boas práticas) em 9 telas, em desktop e celular — **0 violações** (`npm run test:a11y`). Foram feitos também testes de teclado automatizados. **Não foram realizados testes com leitores de tela reais** (NVDA, VoiceOver).
+- **Verificação automática:** (1) **axe-core** (WCAG 2.0/2.1/2.2 A e AA e boas práticas) em 9 telas, em desktop e celular — **0 violações** (`npm run test:a11y`); (2) conferência da **árvore de acessibilidade** do Chrome — a que os leitores de tela consomem — com 33 verificações: marcos e navegações nomeados, um único `h1`, rótulos dos campos, estados `expanded`/`disabled`, anúncio da contagem de resultados, nenhum controle sem nome (`npm run test:arvore`); (3) testes de teclado automatizados. Os testes foram validados injetando defeitos de acessibilidade de propósito (botão sem nome, `aria-expanded` removido etc.), todos detectados.
+- **Teste manual com leitor de tela real: pendente.** O roteiro (23 tarefas, com o que deve ser lido em cada uma) está em [docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md); o resultado ainda precisa ser executado e registrado ali.
 
 ## 11. Processo de publicação
 
@@ -342,8 +356,8 @@ Detalhes:
 - **Páginas de apoio inexistentes:** Termos de Uso, Política de Privacidade, Blog etc. não têm conteúdo.
 - **Banco SQLite:** adequado a este volume e a uma instância; não é indicado para várias réplicas ou escrita concorrente. No plano gratuito do Render é recriado a cada início.
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
-- **Testes:** há testes de interface (Puppeteer) e auditoria de acessibilidade (axe), que dependem do Chrome e dos serviços rodando; **não há testes unitários/de integração do back-end** e não há pipeline de CI.
-- **Acessibilidade:** auditoria automática e testes de teclado, mas **sem teste manual com leitores de tela**.
+- **Testes:** o back-end tem 63 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. **Não há pipeline de CI** (os testes são executados manualmente) nem testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
+- **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, mas o **teste manual com leitor de tela real ainda não foi executado** (roteiro pronto em `docs/teste-leitor-de-tela.md`).
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 
 ## Uso de Inteligência Artificial

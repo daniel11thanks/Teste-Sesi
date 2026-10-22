@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test:e2e": "node e2e/catalogo.mjs && node e2e/detalhe.mjs",
-    "test:a11y": "node e2e/acessibilidade.mjs"
+    "test:a11y": "node e2e/acessibilidade.mjs",
+    "test:arvore": "node e2e/arvore-acessibilidade.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
