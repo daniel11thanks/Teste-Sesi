@@ -40,7 +40,11 @@ async function request(path, { params, signal } = {}) {
     throw new ApiError(mensagem, resposta.status)
   }
 
-  return resposta.json()
+  try {
+    return await resposta.json()
+  } catch {
+    throw new ApiError('A resposta do servidor não pôde ser lida. Tente novamente em instantes.', resposta.status)
+  }
 }
 
 export const listarCursos = (filtros, signal) => request('/api/cursos', { params: filtros, signal })

@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:e2e": "node e2e/catalogo.mjs"
+    "test:e2e": "node e2e/catalogo.mjs && node e2e/detalhe.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",

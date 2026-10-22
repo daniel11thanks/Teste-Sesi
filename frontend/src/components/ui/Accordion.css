@@ -1,0 +1,42 @@
+.accordion__item {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.accordion__heading {
+  margin: 0;
+  font-size: inherit;
+}
+
+.accordion__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+  background: transparent;
+  border: 0;
+}
+
+.accordion__button[aria-expanded='true'] {
+  font-weight: 600;
+}
+
+.accordion__button:hover {
+  color: var(--color-red-card);
+}
+
+.accordion__panel {
+  padding: 0.25rem 0 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+.accordion__panel[hidden] {
+  display: none;
+}

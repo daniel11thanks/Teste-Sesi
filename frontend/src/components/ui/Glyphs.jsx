@@ -46,3 +46,10 @@ export const UsersGlyph = (props) => (
     <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c2 .8 3.5 2.6 3.5 5.6" />
   </svg>
 )
+
+export const MedalGlyph = (props) => (
+  <svg {...base} {...props}>
+    <circle cx="12" cy="9" r="6" />
+    <path d="M8.5 14L7 22l5-3 5 3-1.5-8" />
+  </svg>
+)

@@ -42,3 +42,9 @@
 .btn--outline:hover {
   background: #f3f3f3;
 }
+
+.btn:disabled {
+  color: #6b6b6b;
+  background: #e4e4e4;
+  cursor: not-allowed;
+}

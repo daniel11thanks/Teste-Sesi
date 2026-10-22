@@ -112,3 +112,8 @@
     align-items: flex-start;
   }
 }
+
+/* Espaço para a barra de matrícula fixa (página de detalhes do curso). */
+.com-barra-fixa .footer {
+  padding-bottom: 5.5rem;
+}

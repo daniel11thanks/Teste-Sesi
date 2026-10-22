@@ -15,14 +15,17 @@ export default function Layout() {
     }
   }, [pathname, hash])
 
+  // Na página de um curso há uma barra de matrícula fixa; o rodapé ganha espaço extra para não ficar coberto.
+  const temBarraFixa = /^\/cursos\/\d+/.test(pathname)
+
   return (
-    <>
+    <div className={temBarraFixa ? 'com-barra-fixa' : undefined}>
       <a className="skip-link" href="#conteudo">
         Ir para o conteúdo
       </a>
       <Header overlay={pathname === '/'} />
       <Outlet />
       <Footer />
-    </>
+    </div>
   )
 }

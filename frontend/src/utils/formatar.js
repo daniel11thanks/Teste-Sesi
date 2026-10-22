@@ -8,3 +8,11 @@ export function formatarData(iso) {
 export const formatarCargaHoraria = (horas) => `${horas} h`
 
 export const rotuloQuantidade = (n) => `${n} ${n === 1 ? 'curso encontrado' : 'cursos encontrados'}`
+
+/** Minúsculas e sem acentos, para comparar textos digitados pelo usuário. */
+export const normalizar = (texto) =>
+  texto
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .trim()

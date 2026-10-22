@@ -33,6 +33,10 @@ public static class CursosEndpoints
             .Produces<CursoDetalheDto>()
             .Produces(StatusCodes.Status404NotFound);
 
+        // Rotas /api desconhecidas devolvem 404 em JSON (e não o index.html do fallback da SPA).
+        api.MapFallback("{**rota}", () => Results.NotFound(new { erro = "Rota da API não encontrada." }))
+            .ExcludeFromDescription();
+
         api.MapGet("/filtros", FiltrosAsync)
             .WithTags("Cursos")
             .WithMetadata(new SwaggerOperationAttribute(

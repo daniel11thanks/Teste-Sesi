@@ -1,0 +1,251 @@
+.detail__state {
+  padding-block: 4rem;
+  min-height: 50vh;
+}
+
+/* Hero do curso */
+.detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 2.5rem clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.detail-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-hero__title {
+  margin-top: 1rem;
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.detail-hero__lead {
+  margin-top: 0.75rem;
+  color: var(--color-text-soft);
+}
+
+.detail-hero__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block: 1.25rem 1.5rem;
+  font-size: 1rem;
+  color: #181818;
+}
+
+.detail-hero__facts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.detail-hero__facts svg {
+  margin-top: 0.25rem;
+}
+
+.detail-hero__video {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.detail-hero__video img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.detail-hero__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  width: 5rem;
+  height: 5rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  border-radius: 50%;
+}
+
+/* Benefícios */
+.benefits-row {
+  padding-block: 1.5rem 3rem;
+}
+
+.detail-benefits {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.detail-benefits__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  background: #fbd19b;
+  border-radius: var(--radius);
+}
+
+.detail-benefits h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.detail-benefits p {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+/* Sobre o curso */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  gap: 2rem clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+  padding-bottom: var(--space-section);
+}
+
+.about__title {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.about__text {
+  margin-top: 1.25rem;
+  line-height: 1.6;
+}
+
+.syllabus > li,
+.syllabus > section {
+  margin-bottom: 1.5rem;
+}
+
+.syllabus h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-black);
+}
+
+.syllabus p {
+  margin-top: 0.35rem;
+}
+
+.bullets {
+  margin-top: 0.35rem;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.bullets li::before {
+  content: '•';
+  position: absolute;
+  left: 0.2rem;
+}
+
+/* Fale com a gente */
+.contact {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  color: var(--color-white);
+  text-align: center;
+  background: var(--color-red-deep);
+}
+
+.contact__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contact__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.contact__title {
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-h2-lg);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+/* Elementos focados (Tab) ou âncoras não podem ficar escondidos atrás da barra fixa. */
+:root:has(.enroll-bar) {
+  scroll-padding-bottom: 6rem;
+}
+
+/* Barra de matrícula fixa na base da tela */
+.enroll-bar {
+  position: fixed;
+  inset: auto 0 1rem 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.enroll-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  color: var(--color-white);
+  background: var(--color-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+  pointer-events: auto;
+}
+
+.enroll-bar__name {
+  font-weight: 500;
+}
+
+.enroll-bar .btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 60rem) {
+  .detail-hero,
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 36rem) {
+  .detail-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .enroll-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .enroll-bar .btn {
+    justify-content: center;
+  }
+}
