@@ -4,7 +4,7 @@ import Ava from './pages/Ava'
 import Catalogo from './pages/Catalogo'
 import CursoDetalhe from './pages/CursoDetalhe'
 import Landing from './pages/Landing'
-import Placeholder from './pages/Placeholder'
+import NaoEncontrada from './pages/NaoEncontrada'
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/cursos" element={<Catalogo />} />
         <Route path="/cursos/:id" element={<CursoDetalhe />} />
-        <Route path="*" element={<Placeholder titulo="Página não encontrada" />} />
+        <Route path="*" element={<NaoEncontrada />} />
       </Route>
       {/* O AVA tem layout próprio (menu lateral), sem o header e o footer do site. */}
       <Route path="/ava/:id" element={<Ava />} />

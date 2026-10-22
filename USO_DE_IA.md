@@ -32,7 +32,7 @@
 - **Compilação e lint** a cada etapa (`dotnet build`, `npm run build`, `npm run lint`).
 - **Chamadas reais à API** (busca, filtros combinados, valores inválidos, 404) antes de usar no front-end.
 - **Comparação visual** com os prints do Figma, em 1440, 768 e 390 px, usando capturas do Chrome.
-- **Testes automatizados de interface** (`frontend/e2e/catalogo.mjs`, com Chrome headless) cobrindo busca, filtros combinados, contagem, limpar filtros, link direto, botão Voltar, estados de carregamento, erro e vazio, acessibilidade básica e ausência de rolagem horizontal em 390 px.
+- **Testes automatizados de interface** (`frontend/e2e/`, com Chrome headless e axe-core) cobrindo busca, filtros combinados, contagem, limpar filtros, link direto, botão Voltar, estados de carregamento, erro e vazio, acessibilidade básica e ausência de rolagem horizontal em 390 px.
 - **Revisão do candidato** de todo o código antes de cada commit.
 
 ## 5. Exemplo de erro ou inadequação identificado
@@ -45,6 +45,22 @@
 ## 6. Correção realizada
 
 A função que atualiza a URL passou a partir de uma **referência (`useRef`) ao estado mais recente** da URL, em vez do valor capturado pelo temporizador (`frontend/src/pages/Catalogo.jsx`). Foi adicionada uma verificação específica no teste (cenário 3b: "busca atrasada não apaga filtros escolhidos antes dela"), que passa após a correção.
+
+### Segundo exemplo: acessibilidade que parecia correta e não estava
+
+Depois de testar rótulos, foco e teclado manualmente, uma auditoria automática com **axe-core** (`npm run test:a11y`) encontrou 18 ocorrências em código gerado pela IA que passaram despercebidas:
+
+- cargo dos depoimentos sobre o vermelho com contraste de 3,5:1 (mínimo 4,5:1), por causa de uma opacidade aplicada ao texto;
+- o card do catálogo usava `aria-labelledby` apontando só para o título, de modo que o nome acessível do link não continha todo o texto visível (WCAG 2.5.3);
+- o carrossel de depoimentos era rolável, mas sem nenhum item focável, portanto inacessível por teclado;
+- a seção e o carrossel de "Principais cursos" tinham o mesmo nome de marco (landmark);
+- as páginas 404 e "curso não encontrado" não tinham `h1`.
+
+**Correção:** cor cheia no cargo (sobre o vermelho); link estendido a partir do título do card (o nome acessível passa a ser o título visível); trilha do carrossel focável (`tabindex="0"` com rótulo); nome distinto para o carrossel; nível de título configurável (`h1` nas telas de página inteira). A auditoria passa a retornar zero violações nas 9 telas, em desktop e celular, e ficou no repositório como teste.
+
+### Imagens pesadas
+
+As fotos fornecidas (PNG de 2,6 a 3,8 MB) foram aplicadas direto pela IA nas telas. Ao revisar o peso da página, foram convertidas para WebP (22 a 99 KB, sem perda visível), com script em `frontend/scripts/otimizar-imagens.mjs` e uma migration de dados para atualizar o caminho da imagem em bancos já criados.
 
 ### Outros problemas da IA corrigidos durante o desenvolvimento
 

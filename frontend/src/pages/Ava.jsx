@@ -32,6 +32,7 @@ export default function Ava() {
     return (
       <main id="conteudo" className="ava-state">
         <EmptyState
+          nivel={1}
           title="Curso não encontrado"
           action={
             <Button to="/cursos" variant="dark">
@@ -47,7 +48,7 @@ export default function Ava() {
   if (error) {
     return (
       <main id="conteudo" className="ava-state">
-        <ErrorMessage error={error} onRetry={reload} />
+        <ErrorMessage error={error} onRetry={reload} nivel={1} />
       </main>
     )
   }

@@ -35,7 +35,7 @@ export default function Carousel({ label, children, footer = null, variant = 'li
 
   return (
     <div className={`carousel carousel--${variant}`} role="region" aria-roledescription="carrossel" aria-label={label}>
-      <ul className="carousel__track" ref={trilha} onScroll={atualizar}>
+      <ul className="carousel__track" ref={trilha} onScroll={atualizar} tabIndex={0} aria-label={`Itens: ${label}`}>
         {children}
       </ul>
 

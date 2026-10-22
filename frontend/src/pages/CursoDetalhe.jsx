@@ -52,6 +52,7 @@ export default function CursoDetalhe() {
     return (
       <main id="conteudo" className="container detail__state">
         <EmptyState
+          nivel={1}
           title="Curso não encontrado"
           action={
             <Button to="/cursos" variant="dark">
@@ -68,7 +69,7 @@ export default function CursoDetalhe() {
   if (error) {
     return (
       <main id="conteudo" className="container detail__state">
-        <ErrorMessage error={error} onRetry={reload} />
+        <ErrorMessage error={error} onRetry={reload} nivel={1} />
       </main>
     )
   }
@@ -148,7 +149,7 @@ function Hero({ curso }) {
       </div>
 
       <figure className="detail-hero__video">
-        <img src="/assets/video-thumb.png" alt="Profissionais da indústria durante um treinamento" />
+        <img src="/assets/video-thumb.webp" alt="Profissionais da indústria durante um treinamento" />
         <span className="detail-hero__play" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />

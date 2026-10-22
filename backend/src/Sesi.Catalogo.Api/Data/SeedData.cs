@@ -96,7 +96,7 @@ public static class SeedData
         CargaHoraria = 60,
         PublicoAlvo = "Operadores, técnicos e supervisores de produção da indústria metalúrgica.",
         Status = StatusCurso.Disponivel,
-        ImagemUrl = "/assets/banner-ava.png",
+        ImagemUrl = "/assets/banner-ava.webp",
         DataDisponibilizacao = new DateOnly(2026, 1, 5),
         Modulos = Modulos(
             ("Introdução à Matemática na Metalurgia", [

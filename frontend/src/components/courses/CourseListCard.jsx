@@ -11,7 +11,7 @@ export default function CourseListCard({ curso }) {
 
   return (
     <li className="list-card">
-      <Link to={`/cursos/${curso.id}`} className="list-card__link" aria-labelledby={`curso-${curso.id}`}>
+      <article className="list-card__article">
         <img className="list-card__image" src={curso.imagemUrl} alt="" loading="lazy" />
 
         <div className="list-card__body">
@@ -20,8 +20,11 @@ export default function CourseListCard({ curso }) {
             <StatusBadge status={curso.status} />
           </div>
 
-          <h2 id={`curso-${curso.id}`} className="list-card__title">
-            {curso.nomeCompleto}
+          {/* O link fica no título e se estende por todo o card (::after): nome acessível = título visível. */}
+          <h2 className="list-card__title">
+            <Link to={`/cursos/${curso.id}`} className="list-card__link">
+              {curso.nomeCompleto}
+            </Link>
           </h2>
           <p className="list-card__text">{curso.descricao}</p>
 
@@ -54,7 +57,7 @@ export default function CourseListCard({ curso }) {
             </li>
           </ul>
         </div>
-      </Link>
+      </article>
     </li>
   )
 }

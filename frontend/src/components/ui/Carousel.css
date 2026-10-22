@@ -63,3 +63,8 @@
 .carousel--dark :focus-visible {
   outline-color: var(--color-white);
 }
+
+/* A trilha recebe foco para poder ser rolada com as setas do teclado. */
+.carousel__track:focus-visible {
+  outline-offset: -3px;
+}

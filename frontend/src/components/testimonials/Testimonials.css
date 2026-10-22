@@ -67,7 +67,8 @@
   font-weight: 700;
 }
 
-.testimonial__author span:not(.testimonial__stars) {
+/* Sobre o vermelho, o cargo mantém a cor cheia (contraste mínimo de 4,5:1); só o cartão claro suaviza. */
+.testimonials--light .testimonial__author span:not(.testimonial__stars) {
   opacity: 0.75;
 }
 

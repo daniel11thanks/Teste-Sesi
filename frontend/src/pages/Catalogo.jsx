@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAsync } from '../hooks/useAsync'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { listarCursos, obterFiltros } from '../services/api'
 import { rotuloQuantidade } from '../utils/formatar'
 import CourseFilters from '../components/courses/CourseFilters'
@@ -16,6 +17,7 @@ const CHAVES = ['categoria', 'modalidade', 'status']
  * então o botão Voltar e links compartilhados reproduzem a mesma pesquisa.
  */
 export default function Catalogo() {
+  useDocumentTitle('Catálogo de cursos')
   const [params, setParams] = useSearchParams()
   const busca = params.get('busca') ?? ''
   const filtros = {

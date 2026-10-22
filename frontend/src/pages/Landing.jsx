@@ -1,4 +1,5 @@
 import { useAsync } from '../hooks/useAsync'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { listarCursos } from '../services/api'
 import Button from '../components/ui/Button'
 import Carousel from '../components/ui/Carousel'
@@ -35,6 +36,8 @@ const BENEFICIOS = [
 const QTD_DESTAQUES = 6
 
 export default function Landing() {
+  useDocumentTitle('Impulsione sua carreira na indústria')
+
   return (
     <main id="conteudo">
       <Hero />
@@ -84,7 +87,7 @@ function CursosEmDestaque() {
       )}
       {data && (
         <Carousel
-          label="Principais cursos"
+          label="Cursos em destaque"
           footer={
             <Button to="/cursos" variant="outline">
               Ver todos os cursos
@@ -159,7 +162,7 @@ function ChamadaFinal() {
         </div>
 
         <figure className="cta__video">
-          <img src="/assets/video-thumb.png" alt="Profissionais da indústria durante um treinamento" loading="lazy" />
+          <img src="/assets/video-thumb.webp" alt="Profissionais da indústria durante um treinamento" loading="lazy" />
           <span className="cta__play" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
               <path d="M8 5v14l11-7z" />

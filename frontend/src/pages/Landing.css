@@ -12,7 +12,7 @@
   padding-top: var(--header-h);
   color: var(--color-white);
   background-color: #b31f21;
-  background-image: url('/assets/hero-image.png');
+  background-image: url('/assets/hero-image.webp');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

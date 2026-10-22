@@ -84,8 +84,9 @@ await page.close()
 // Não encontrado / erro
 for (const caminho of ['/cursos/999', '/cursos/abc']) {
   page = await abrir(caminho)
-  await page.waitForSelector('.feedback')
-  ok(/Curso não encontrado/.test(await texto(page, '.feedback')), `11. ${caminho} mostra "Curso não encontrado"`)
+  // .feedback também é usado no estado "Carregando": espera pelo texto final, não só pelo seletor.
+  await esperar(page, () => /Curso não encontrado/.test(document.querySelector('main')?.textContent ?? ''))
+  ok(/Curso não encontrado/.test(await texto(page, 'main h1')), `11. ${caminho} mostra "Curso não encontrado" (título h1)`)
   await page.close()
 }
 page = await browser.newPage()
