@@ -1,0 +1,17 @@
+# Sobe a aplicação completa (API + front-end + banco SQLite) em http://localhost:8080
+#   docker compose up --build
+services:
+  app:
+    build: .
+    image: catalogo-sesi
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__Catalogo: "Data Source=/data/catalogo.db"
+      Swagger__Habilitado: "true"
+    volumes:
+      - catalogo-data:/data
+    restart: unless-stopped
+
+volumes:
+  catalogo-data:
