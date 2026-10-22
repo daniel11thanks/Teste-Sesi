@@ -17,7 +17,8 @@ async function abrir() {
   const page = await browser.newPage()
   await page.setViewport({ width: 1440, height: 900 })
   await page.goto(`${BASE}/`)
-  await page.waitForSelector('.carousel__track li')
+  // O carrossel de cursos só aparece depois que a API responde (o de depoimentos é estático): espera pelo certo.
+  await page.waitForSelector('.featured .carousel__track li', { timeout: 20000 })
   await page.$eval('.featured', (e) => e.scrollIntoView({ block: 'center', behavior: 'instant' }))
   await espera(400)
   return page
