@@ -1,0 +1,89 @@
+/*
+ * Tokens extraídos do protótipo do Figma (ver docs/design/99-paleta-tipografia-globais.md).
+ * As medidas do protótipo vieram em px do print; aqui foram convertidas assumindo um frame de
+ * 1440 px de largura (fator ≈ 1,29). O valor do frame não foi confirmado: ver README (limitações).
+ */
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Cores */
+  --color-black: #000000;
+  --color-ink: #0c0c0c;
+  --color-ink-soft: #151314;
+  --color-white: #ffffff;
+  --color-red-overlay: #981816;
+  --color-red-card: #9a0312;
+  --color-red-deep: #880002;
+  --color-red: #c3212c;
+  --color-red-tint: #fcecee;
+  --color-footer: #1e0200;
+  --color-footer-title: #fffbf4;
+  --color-footer-link: #a58d89;
+  --color-peach: #fcd19c;
+  --color-tag-matematica: #fad19a;
+  --color-tag-ciencias: #e5cff7;
+  --color-tag-linguagens: #cfe8f7;
+  --color-tag-sustentabilidade: #cdeccb;
+  --color-line: #e1e1e1;
+  --color-line-strong: #cecece;
+  --color-text-soft: #545454;
+  --color-text-muted: #949494;
+  --color-track: #444444;
+  --color-focus: #0b57d0;
+  --color-error-bg: #fdecec;
+  --color-error: #9a0312;
+
+  /* Tipografia */
+  --font-sans: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --fs-hero: clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem);
+  --fs-h1: clamp(1.75rem, 1.2rem + 2.2vw, 2.5rem);
+  --fs-h2: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  --fs-h3: 1.25rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-button: 1rem;
+  --fs-tag: 0.75rem;
+  --lh-body: 1.6;
+  --lh-tight: 1.15;
+
+  /* Layout */
+  --container: 75.75rem; /* 1212 px */
+  --gutter: clamp(1rem, 4vw, 5.5rem);
+  --header-h: 4.5rem;
+  --space-section: clamp(3rem, 6vw, 6rem);
+
+  /* Forma */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 8px;
+  --shadow-card: 0 6px 18px rgb(0 0 0 / 0.14);
+  --shadow-card-hover: 0 14px 30px rgb(0 0 0 / 0.26);
+}
