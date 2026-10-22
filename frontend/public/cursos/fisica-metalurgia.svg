@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="fisica-metalurgia-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f29a30"/>
+      <stop offset="1" stop-color="#9a0312"/>
+    </linearGradient>
+    <radialGradient id="fisica-metalurgia-luz" cx="0.78" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="420" fill="url(#fisica-metalurgia-bg)"/>
+  <rect width="600" height="420" fill="url(#fisica-metalurgia-luz)"/>
+  <path d="M0 130 C 75 80, 150 180, 225 130 S 375 80, 450 130 S 560 170, 600 130" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 185 C 75 135, 150 235, 225 185 S 375 135, 450 185 S 560 225, 600 185" fill="none" stroke="#fff" stroke-opacity="0.45000000000000007" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 240 C 75 190, 150 290, 225 240 S 375 190, 450 240 S 560 280, 600 240" fill="none" stroke="#fff" stroke-opacity="0.35000000000000003" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 295 C 75 245, 150 345, 225 295 S 375 245, 450 295 S 560 335, 600 295" fill="none" stroke="#fff" stroke-opacity="0.25" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="470" cy="110" r="46" fill="#fff" fill-opacity="0.85"/><path d="M120 330 Q 300 60 480 330" fill="none" stroke="#fff" stroke-opacity="0.75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 14"/><circle cx="150" cy="300" r="10" fill="#fff"/><circle cx="215" cy="205" r="10" fill="#fff"/><circle cx="300" cy="170" r="10" fill="#fff"/><circle cx="385" cy="205" r="10" fill="#fff"/><circle cx="450" cy="300" r="10" fill="#fff"/>
+</svg>

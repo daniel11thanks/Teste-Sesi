@@ -1,0 +1,196 @@
+.section-title {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+/* Hero: foto com sobreposição vermelha, sob o header fixo. */
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: clamp(30rem, 44vw, 39.5rem);
+  padding-top: var(--header-h);
+  color: var(--color-white);
+  background-color: #b31f21;
+  background-image: url('/assets/hero-image.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.hero__title {
+  max-width: 11ch;
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.hero__text {
+  max-width: 36rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: #ffede3;
+}
+
+/* Principais cursos */
+.featured {
+  padding-top: var(--space-section);
+}
+
+.featured .section-title {
+  margin-bottom: 1.5rem;
+}
+
+/* Impacto transformador */
+.impact {
+  padding-block: var(--space-section);
+}
+
+.impact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  gap: 3rem clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.impact__text {
+  max-width: 22rem;
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.stats__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.stats__value {
+  margin: 0;
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 3.75rem);
+  line-height: 1.2;
+}
+
+.stats__label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.benefit__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  background: var(--color-red-tint);
+  border-radius: var(--radius);
+}
+
+.benefit__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.benefit__text {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-soft);
+}
+
+/* Chamada final */
+.cta {
+  padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--space-section);
+  color: var(--color-white);
+  background: var(--color-red-deep);
+  border-top: 1px solid rgb(255 255 255 / 0.18);
+}
+
+.cta__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.cta__title {
+  max-width: 15ch;
+  font-size: var(--fs-h2-lg);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.cta__text {
+  margin-block: 1.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: #ffede3;
+}
+
+.cta__video {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.cta__video img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.cta__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  width: 5rem;
+  height: 5rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  border-radius: 50%;
+}
+
+@media (max-width: 60rem) {
+  .impact__grid,
+  .cta__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact__text,
+  .cta__title {
+    max-width: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .stats__row {
+    flex-wrap: wrap;
+  }
+}

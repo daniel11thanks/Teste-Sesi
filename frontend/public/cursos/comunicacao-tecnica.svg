@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="comunicacao-tecnica-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a78bd"/>
+      <stop offset="1" stop-color="#8a1020"/>
+    </linearGradient>
+    <radialGradient id="comunicacao-tecnica-luz" cx="0.78" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="420" fill="url(#comunicacao-tecnica-bg)"/>
+  <rect width="600" height="420" fill="url(#comunicacao-tecnica-luz)"/>
+  <rect x="90" y="70" width="270" height="170" rx="22" fill="#fff" fill-opacity="0.9"/><path d="M140 240l-8 52 58-52z" fill="#fff" fill-opacity="0.9"/><path d="M125 115h190M125 150h150M125 185h175" fill="none" stroke="#7a1020" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round"/><rect x="300" y="190" width="215" height="140" rx="20" fill="#fff" fill-opacity="0.35"/><path d="M470 330l8 46-52-46z" fill="#fff" fill-opacity="0.35"/><path d="M335 235h140M335 270h100" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

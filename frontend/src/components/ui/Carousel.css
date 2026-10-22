@@ -1,0 +1,65 @@
+.carousel {
+  --edge: max(var(--gutter), calc((100% - var(--container)) / 2));
+}
+
+/* A trilha começa alinhada ao container e sangra até a borda direita da tela, como no Figma. */
+.carousel__track {
+  display: flex;
+  gap: 1.125rem;
+  padding: 1rem var(--edge) 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__track > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.carousel__arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.carousel__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-black);
+}
+
+.carousel--dark .carousel__arrow {
+  color: var(--color-white);
+}
+
+.carousel__arrow:hover:not(:disabled) {
+  background: rgb(128 128 128 / 0.22);
+}
+
+.carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.carousel--dark :focus-visible {
+  outline-color: var(--color-white);
+}

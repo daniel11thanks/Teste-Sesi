@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="residuos-economia-circular-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6aa84f"/>
+      <stop offset="1" stop-color="#8a1020"/>
+    </linearGradient>
+    <radialGradient id="residuos-economia-circular-luz" cx="0.78" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="420" fill="url(#residuos-economia-circular-bg)"/>
+  <rect width="600" height="420" fill="url(#residuos-economia-circular-luz)"/>
+  <circle cx="300" cy="210" r="160" fill="#fff" fill-opacity="0.1"/><path d="M322.9 102.4 A110 110 0 0 1 404.6 244.0" fill="none" stroke="#fff" stroke-opacity="0.95" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(404.6 244.0) rotate(108.0)"><polygon points="0,-30 28,18 -28,18" fill="#fff"/></g><path d="M381.7 283.6 A110 110 0 0 1 218.3 283.6" fill="none" stroke="#fff" stroke-opacity="0.95" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(218.3 283.6) rotate(228.0)"><polygon points="0,-30 28,18 -28,18" fill="#fff"/></g><path d="M195.4 244.0 A110 110 0 0 1 277.1 102.4" fill="none" stroke="#fff" stroke-opacity="0.95" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(277.1 102.4) rotate(348.0)"><polygon points="0,-30 28,18 -28,18" fill="#fff"/></g>
+</svg>

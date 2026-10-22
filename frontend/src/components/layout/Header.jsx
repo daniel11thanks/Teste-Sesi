@@ -5,7 +5,7 @@ import './Header.css'
 const LINKS = [
   { to: '/', label: 'Início', end: true },
   { to: '/cursos', label: 'Cursos' },
-  { to: '/#sobre', label: 'Sobre' },
+  { to: '/#sobre', label: 'Sobre', ancora: true },
 ]
 
 /**
@@ -68,9 +68,16 @@ export default function Header({ overlay = false }) {
           <ul className="header__list">
             {LINKS.map((item) => (
               <li key={item.label}>
-                <NavLink to={item.to} end={item.end} className="header__link" onClick={fechar}>
-                  {item.label}
-                </NavLink>
+                {item.ancora ? (
+                  // Âncora na Landing: NavLink ignoraria o hash e marcaria "Sobre" e "Início" como ativos juntos.
+                  <Link to={item.to} className="header__link" onClick={fechar}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <NavLink to={item.to} end={item.end} className="header__link" onClick={fechar}>
+                    {item.label}
+                  </NavLink>
+                )}
               </li>
             ))}
             <li>
