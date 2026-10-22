@@ -26,8 +26,18 @@ const esperar = (page, fn, arg) => page.waitForFunction(fn, { timeout: 6000, pol
 let page = await abrir('/cursos/1')
 await page.waitForSelector('h1')
 ok((await texto(page, 'h1')) === 'Matemática para a Precisão: Medidas e Escalas na Metalurgia', '1. título do curso vindo da API')
+// Topo igual ao Figma: só data de início e certificação; os demais dados ficam no bloco "Informações do curso".
 const fatos = await texto(page, '.detail-hero__facts')
-ok(/Início do curso: 05\/01\/2026/.test(fatos) && /Certificação: SESI/.test(fatos) && /Carga horária: 60 h/.test(fatos) && /Modalidade: Online/.test(fatos) && /Público-alvo:/.test(fatos), '2. exibe data, certificação, carga horária, modalidade e público-alvo', fatos.slice(0, 90))
+ok(/Início do curso: 05\/01\/2026/.test(fatos) && /Certificação: SESI/.test(fatos), '2. topo mostra data de início e certificação, como no Figma', fatos)
+ok(!/Carga horária|Modalidade|Público-alvo/.test(await texto(page, '.detail-hero')), '2b. topo NÃO repete os dados extras (carga horária, modalidade, público-alvo)')
+const info = await texto(page, '.info')
+ok(/Informações do curso/.test(info) && /Descrição\s*Aplicação de grandezas/.test(info) && /Status\s*Disponível/.test(info) && /Carga horária\s*60 h/.test(info) && /Modalidade\s*Online/.test(info) && /Público-alvo\s*Operadores/.test(info), '2c. bloco "Informações do curso" traz descrição, status, carga horária, modalidade e público-alvo', info.slice(0, 120))
+ok((await page.$eval('.info', (e) => e.closest('.about-section') !== null)), '2d. o bloco fica dentro da seção "Sobre o curso" (faixa abaixo das duas colunas)')
+const ordem = await page.evaluate(() => {
+  const y = (s) => document.querySelector(s).getBoundingClientRect().top + window.scrollY
+  return { hero: y('.detail-hero'), beneficios: y('.benefits-row'), sobre: y('.about'), info: y('.info') }
+})
+ok(ordem.hero < ordem.beneficios && ordem.beneficios < ordem.sobre && ordem.sobre <= ordem.info, '2e. ordem das seções igual ao Figma (topo, benefícios, sobre) com o bloco dentro de "Sobre"', JSON.stringify(ordem))
 ok((await page.$$eval('.detail-benefits li', (l) => l.length)) === 4, '3. quatro benefícios')
 ok((await page.title()).startsWith('Matemática para a Precisão'), '3b. título da aba acompanha o curso', await page.title())
 
@@ -64,6 +74,26 @@ ok(mail.startsWith('mailto:contato@sesindustria.com.br'), '7. "Mandar uma mensag
 
 const barra = await page.$eval('.enroll-bar', (b) => ({ pos: getComputedStyle(b).position, texto: b.textContent.replace(/\s+/g, ' ').trim() }))
 ok(barra.pos === 'fixed' && /Matricule-se/.test(barra.texto) && /Matemática para a Precisão/.test(barra.texto), '8. barra de matrícula fixa com o nome do curso')
+
+// Coluna do texto "Sobre o curso" fixa na rolagem, como no Figma (o conteúdo dos acordeões rola ao lado)
+if ((await botoes())[0] !== 'true') await clicar('.accordion__item:nth-child(1) .accordion__button') // Módulos aberto: coluna da direita bem alta
+const fixa = async (y) => {
+  await page.evaluate((yy) => window.scrollTo({ top: yy, behavior: 'instant' }), y)
+  await new Promise((r) => setTimeout(r, 250))
+  return page.$eval('.about__fixed', (e) => { const r = e.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom) } })
+}
+const caixa = await page.evaluate(() => { const r = document.querySelector('.about').getBoundingClientRect(); return { topo: r.top + window.scrollY, alto: r.height } })
+ok((await page.$eval('.about__fixed', (e) => getComputedStyle(e).position)) === 'sticky', '8b. em desktop a coluna do texto é "sticky"')
+const antesDela = await fixa(caixa.topo - 400)
+ok(antesDela.top >= 380, '8c. antes da seção a coluna está na posição natural (ainda não grudou)', JSON.stringify(antesDela))
+const noMeio = await fixa(caixa.topo + caixa.alto * 0.5)
+ok(noMeio.top >= 0 && noMeio.top <= 8, '8d. no meio da seção a coluna fica fixa no topo da tela (como no Figma, ~4 px da borda)', JSON.stringify(noMeio))
+const maisAFrente = await fixa(caixa.topo + caixa.alto * 0.7)
+ok(maisAFrente.top >= 0 && maisAFrente.top <= 8, '8e. continua fixa enquanto a coluna da direita ainda rola', JSON.stringify(maisAFrente))
+const fim = await fixa(caixa.topo + caixa.alto - 120)
+const limite = await page.$eval('.about', (e) => Math.round(e.getBoundingClientRect().bottom))
+ok(fim.bottom <= limite + 1, '8f. no fim da seção a coluna sai junto, sem encobrir a faixa de informações', `coluna termina em ${fim.bottom}, seção em ${limite}`)
+await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
 
 await Promise.all([page.waitForNavigation(), page.click('.detail-hero__info a.btn')])
 ok(new URL(page.url()).pathname === '/ava/1', '9. "Matricule-se" leva ao AVA do curso', new URL(page.url()).pathname)
@@ -135,6 +165,17 @@ for (const caminho of ['/cursos/1', '/ava/1', '/']) {
     const depois = await page.$eval('#ava-menu', (m) => getComputedStyle(m).display)
     ok(antes === 'none' && depois !== 'none', '17b. no celular o menu do AVA começa recolhido e abre pelo botão', `${antes} -> ${depois}`)
   }
+  await page.close()
+}
+
+// ---------- Coluna fixa: só em telas largas e altas; no celular e em telas baixas rola junto ----------
+for (const [largura, altura, rotulo] of [[390, 900, 'celular (390 px)'], [800, 900, 'tablet (800 px)'], [1440, 500, 'tela baixa (500 px de altura)']]) {
+  page = await browser.newPage()
+  await page.setViewport({ width: largura, height: altura })
+  await page.goto(`${BASE}/cursos/1`)
+  await page.waitForSelector('.about__fixed')
+  const pos = await page.$eval('.about__fixed', (e) => getComputedStyle(e).position)
+  ok(pos === 'static', `18. coluna do texto NÃO é fixa em ${rotulo}: rola junto`, pos)
   await page.close()
 }
 

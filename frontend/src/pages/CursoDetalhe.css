@@ -30,11 +30,6 @@
   line-height: 1.2;
 }
 
-.detail-hero__lead {
-  margin-top: 0.75rem;
-  color: var(--color-text-soft);
-}
-
 .detail-hero__facts {
   display: flex;
   flex-direction: column;
@@ -111,12 +106,24 @@
 }
 
 /* Sobre o curso */
+.about-section {
+  padding-bottom: var(--space-section);
+}
+
 .about {
   display: grid;
   grid-template-columns: 37.3% minmax(0, 1fr);
   gap: 2rem 0;
   align-items: start;
-  padding-bottom: var(--space-section);
+}
+
+/* Coluna do texto fixa no topo da tela enquanto os acordeões rolam (como no Figma, onde o título fica a ~3 px da
+   borda). Só em telas largas e altas o bastante para o texto caber inteiro; nas demais, rola junto. */
+@media (min-width: 60rem) and (min-height: 40rem) {
+  .about__fixed {
+    position: sticky;
+    top: 0.25rem;
+  }
 }
 
 .about__title {
@@ -130,6 +137,53 @@
   margin-top: 1.25rem;
   font-size: 1.225rem;
   line-height: 1.42;
+}
+
+/* Informações do curso: bloco discreto sob o texto "Sobre o curso" */
+.info {
+  margin-top: 3rem;
+  padding: 1.5rem 2rem;
+  background: #f7f7f7;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.info__title {
+  margin-bottom: 0.9rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.info__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem 2rem;
+  margin: 0;
+}
+
+.info__wide {
+  grid-column: 1 / -1;
+}
+
+.info__list dt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.info__list dt svg {
+  color: var(--color-red);
+}
+
+.info__list dd {
+  margin: 0.2rem 0 0;
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
 .syllabus > li,
@@ -149,7 +203,7 @@
 }
 
 .bullets {
-  margin-top: 0.35rem;
+  margin-top: 0;
 }
 
 .bullets li {
@@ -232,6 +286,10 @@
     grid-template-columns: 1fr;
   }
 
+  .info__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .detail-hero__info {
     padding-right: 0;
   }
@@ -242,8 +300,13 @@
 }
 
 @media (max-width: 36rem) {
-  .detail-benefits {
+  .detail-benefits,
+  .info__list {
     grid-template-columns: 1fr;
+  }
+
+  .info {
+    padding: 1.25rem;
   }
 
   .enroll-bar__inner {

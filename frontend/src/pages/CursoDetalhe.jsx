@@ -102,13 +102,11 @@ function Hero({ curso }) {
       <div className="detail-hero__info">
         <div className="detail-hero__tags">
           <CategoryTag categoria={curso.categoria} />
-          <StatusBadge status={curso.status} />
         </div>
 
         <h1 id="titulo-curso" className="detail-hero__title">
           {curso.nomeCompleto}
         </h1>
-        <p className="detail-hero__lead">{curso.descricao}</p>
 
         <ul className="detail-hero__facts">
           {inicio && (
@@ -123,24 +121,6 @@ function Hero({ curso }) {
             <MedalGlyph />
             <span>
               Certificação: <strong>SESI</strong>
-            </span>
-          </li>
-          <li>
-            <ClockGlyph />
-            <span>
-              Carga horária: <strong>{formatarCargaHoraria(curso.cargaHoraria)}</strong>
-            </span>
-          </li>
-          <li>
-            <ModeGlyph />
-            <span>
-              Modalidade: <strong>{curso.modalidade.rotulo}</strong>
-            </span>
-          </li>
-          <li>
-            <UsersGlyph />
-            <span>
-              Público-alvo: <strong>{curso.publicoAlvo}</strong>
             </span>
           </li>
         </ul>
@@ -261,15 +241,65 @@ function SobreOCurso({ curso }) {
   ]
 
   return (
-    <section className="container about" aria-labelledby="titulo-sobre">
-      <div>
-        <h2 id="titulo-sobre" className="about__title">
-          Sobre o curso
-        </h2>
-        <p className="about__text">{curso.sobre}</p>
+    <section className="container about-section" aria-labelledby="titulo-sobre">
+      <div className="about">
+        {/* Como no Figma, esta coluna fica fixa no topo enquanto o conteúdo dos acordeões rola ao lado. */}
+        <div className="about__fixed">
+          <h2 id="titulo-sobre" className="about__title">
+            Sobre o curso
+          </h2>
+          <p className="about__text">{curso.sobre}</p>
+        </div>
+        <Accordion items={itens} />
       </div>
-      <Accordion items={itens} />
+      <InformacoesDoCurso curso={curso} />
     </section>
+  )
+}
+
+/**
+ * Dados do curso que o enunciado pede e o Figma não mostra (descrição, status, carga horária, modalidade e
+ * público-alvo). Ficam numa faixa abaixo das duas colunas de "Sobre o curso": assim a coluna do texto, que é fixa na
+ * rolagem como no protótipo, continua curta (uma coluna fixa mais alta que a tela teria o fim cortado) e nenhum
+ * elemento do Figma muda de posição.
+ */
+function InformacoesDoCurso({ curso }) {
+  return (
+    <aside className="info" aria-labelledby="titulo-informacoes">
+      <h3 id="titulo-informacoes" className="info__title">
+        Informações do curso
+      </h3>
+      <dl className="info__list">
+        <div className="info__wide">
+          <dt>Descrição</dt>
+          <dd>{curso.descricao}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>
+            <StatusBadge status={curso.status} />
+          </dd>
+        </div>
+        <div>
+          <dt>
+            <ClockGlyph /> Carga horária
+          </dt>
+          <dd>{formatarCargaHoraria(curso.cargaHoraria)}</dd>
+        </div>
+        <div>
+          <dt>
+            <ModeGlyph /> Modalidade
+          </dt>
+          <dd>{curso.modalidade.rotulo}</dd>
+        </div>
+        <div>
+          <dt>
+            <UsersGlyph /> Público-alvo
+          </dt>
+          <dd>{curso.publicoAlvo}</dd>
+        </div>
+      </dl>
+    </aside>
   )
 }
 

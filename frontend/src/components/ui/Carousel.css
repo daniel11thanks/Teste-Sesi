@@ -1,12 +1,14 @@
 .carousel {
   --edge: max(var(--gutter), calc((100% - var(--container)) / 2));
+  --espaco-cards: 1.125rem;
 }
 
-/* A trilha começa alinhada ao container e sangra até a borda direita da tela, como no Figma. */
+/* A trilha começa alinhada ao container e sangra até a borda direita da tela, como no Figma. No fim da rolagem o
+   último card para a uma pequena distância da borda, igual ao espaço entre os cards (no Figma ele encosta). */
 .carousel__track {
   display: flex;
-  gap: 1.125rem;
-  padding: 1rem var(--edge) 1.5rem;
+  gap: var(--espaco-cards);
+  padding: 1rem var(--espaco-cards) 1.5rem var(--edge);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--edge);
@@ -15,6 +17,33 @@
 
 .carousel__track::-webkit-scrollbar {
   display: none;
+}
+
+/* Arrastável com o mouse: cursor de "mão" em toda a trilha (inclusive sobre os links dos cards) e sem seleção de
+   texto nem arrasto nativo de imagens/links, que atrapalhariam o gesto. */
+.carousel__track,
+.carousel__track a {
+  cursor: grab;
+}
+
+.carousel__track {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.carousel__track img,
+.carousel__track a {
+  -webkit-user-drag: none;
+}
+
+/* Durante o arrasto o snap sai de cena (senão a trilha "pula" a cada pixel) e volta ao soltar. */
+.carousel__track--arrastando,
+.carousel__track--arrastando a {
+  cursor: grabbing;
+}
+
+.carousel__track--arrastando {
+  scroll-snap-type: none;
 }
 
 .carousel__track > * {

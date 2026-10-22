@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:e2e": "node e2e/catalogo.mjs && node e2e/detalhe.mjs",
+    "test:e2e": "node e2e/catalogo.mjs && node e2e/detalhe.mjs && node e2e/carrossel.mjs",
     "test:a11y": "node e2e/acessibilidade.mjs",
     "test:arvore": "node e2e/arvore-acessibilidade.mjs"
   },

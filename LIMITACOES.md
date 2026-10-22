@@ -30,9 +30,11 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Tela de catálogo (`/cursos`) e página 404 não existem no Figma | O enunciado exige listar, pesquisar e filtrar e prevê estados de erro; criadas com o mesmo visual |
 | Sem layouts de tablet/celular no Figma | Responsividade definida por conta própria (README, seção 9) |
 | Cards dos cursos 2 a 8 com **ilustrações SVG** em vez de fotos | As fotos dos cards **não foram fornecidas** nos arquivos do teste (só a do curso 1) |
-| Campos extras (status, carga horária, modalidade, público-alvo) em cards e detalhes | Exigidos pelo enunciado e ausentes no protótipo |
+| Campos extras (descrição, status, carga horária, modalidade, público-alvo) nos cards do catálogo e no bloco “Informações do curso” da página de detalhes, que é uma **faixa no fim da seção “Sobre o curso”**, abaixo das duas colunas | O enunciado pede esses campos em cada curso e o protótipo não os mostra. O topo da página de detalhes ficou idêntico ao Figma, e a faixa foi colocada abaixo das colunas porque a coluna do texto é fixa na rolagem (como no Figma) e precisa ser curta para caber na tela |
+| Coluna “Sobre o curso” fixa na rolagem (como no Figma) | Reproduzida apenas em telas largas e altas (a partir de 960 px de largura e 640 px de altura); em celular, tablet e janelas baixas a coluna rola junto, para o texto não ficar cortado |
+| Pequena margem (18 px) depois do último card dos carrosséis | No Figma o último card encosta na borda direita da tela; na aplicação ele para a 18 px dela, a mesma distância que há entre os cards, para não ficar colado na janela |
 | Matrícula desabilitada para cursos “Em breve” e “Encerrado” | Regra de negócio que o protótipo não prevê |
-| Barra de matrícula não cobre o rodapé | Evita conteúdo escondido (acessibilidade) |
+| Barra preta flutuante de matrícula (página de detalhes do curso): espaço extra no rodapé | No Figma, no fim da página a barra fixa passa por cima do conteúdo do rodapé e o esconde. Na aplicação o rodapé ganha um recuo (espaço extra embaixo) só nessa página, para a barra **não ficar em cima das informações do rodapé**; o foco do teclado também não fica atrás dela |
 | Destinos de links sem ação no protótipo (Área do aluno, Sobre etc.) | Apontados para páginas existentes ou âncoras |
 | AVA: um item de menu por módulo do curso, busca no menu e menu recolhível no celular; texto da aula parametrizado | Necessário para servir a qualquer curso |
 | Container de conteúdo com largura máxima (1212 px) | O Figma escala o quadro com a janela |
