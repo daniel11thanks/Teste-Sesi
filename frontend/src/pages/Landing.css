@@ -4,19 +4,32 @@
   line-height: var(--lh-tight);
 }
 
-/* Hero: foto com sobreposição vermelha, sob o header fixo. */
+/*
+ * Hero: foto com sobreposição vermelha translúcida, sob o header fixo.
+ * Valores medidos comparando pixel a pixel o print do Figma com a foto original (correlação 0,996):
+ * sobreposição #9E0401 a 83,7% de opacidade (mistura normal: a foto clara deixa o vermelho "leitoso") e foto
+ * exibida a 141% da largura, enquadrada à esquerda/acima. Em telas estreitas, `cover` evita faixas vazias.
+ */
 .hero {
   display: flex;
   align-items: center;
-  min-height: clamp(30rem, 44vw, 39.5rem);
+  min-height: clamp(30rem, 45vw, 41.5rem);
   padding-top: var(--header-h);
   color: var(--color-white);
-  background-color: #b31f21;
-  background-image: url('/assets/hero-image.webp');
-  background-position: center;
-  background-size: cover;
+  background-color: var(--color-red-overlay);
+  background-image:
+    linear-gradient(rgb(158 4 1 / 0.837), rgb(158 4 1 / 0.837)),
+    url('/assets/hero-image.webp');
+  background-position: 0 0, 72% center;
+  background-size: auto, cover;
   background-repeat: no-repeat;
-  background-blend-mode: multiply;
+}
+
+@media (min-width: 60rem) {
+  .hero {
+    background-position: 0 0, 26.8% 40.7%;
+    background-size: auto, 141% auto;
+  }
 }
 
 .hero__inner {
