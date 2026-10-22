@@ -4,10 +4,10 @@ Aplicação web de catálogo de cursos para um ambiente virtual de aprendizagem 
 
 | | |
 |---|---|
-| **Aplicação publicada** | _a preencher após a publicação_ (ver [Processo de publicação](#11-processo-de-publicação)) |
+| **Aplicação publicada** | **https://catalogo-sesi.onrender.com** (Render, plano gratuito; ver [Processo de publicação](#11-processo-de-publicação)) |
 | **Repositório** | https://github.com/daniel11thanks/Teste-Sesi |
 | **Execução local** | `docker compose up --build` → http://localhost:8080 |
-| **Documentação da API (Swagger)** | `/swagger` (ex.: http://localhost:8080/swagger) |
+| **Documentação da API (Swagger)** | https://catalogo-sesi.onrender.com/swagger (local: http://localhost:8080/swagger) |
 | **Uso de IA** | [USO_DE_IA.md](USO_DE_IA.md) |
 
 ## Sumário
@@ -187,7 +187,7 @@ npm run test:a11y     # auditoria axe-core: 9 telas × desktop e celular
 npm run test:arvore   # árvore de acessibilidade: marcos, nomes, títulos e estados
 ```
 
-Os testes de interface pressupõem o banco com o seed original (8 cursos) e foram executados também contra o container Docker.
+Os testes de interface pressupõem o banco com o seed original (8 cursos) e foram executados também contra o container Docker e contra o site publicado.
 
 ## 6. Configuração do banco
 
@@ -316,8 +316,10 @@ A aplicação é publicada como **uma única imagem Docker** (API + front-end), 
 
 1. Faça login em https://render.com e conecte a conta do GitHub.
 2. **New → Blueprint** e selecione o repositório `daniel11thanks/Teste-Sesi`. O Render lê o `render.yaml` e cria o serviço web `catalogo-sesi` a partir do `Dockerfile`.
-3. Aguarde o build (alguns minutos). A URL pública (`https://catalogo-sesi.onrender.com` ou similar) aparece no painel; cole-a na tabela do início deste README.
-4. Verifique `https://<url>/api/health` e `https://<url>/swagger`.
+3. Aguarde o build (alguns minutos). A URL pública aparece no painel do serviço: **https://catalogo-sesi.onrender.com**.
+4. Verifique `/api/health` e `/swagger` na URL pública.
+
+A versão publicada foi verificada com as mesmas suítes usadas localmente (testes de interface do catálogo, dos detalhes e do AVA, axe-core e árvore de acessibilidade) apontando `BASE_URL` para a URL pública. O `render.yaml` tem `autoDeploy: true`: cada `git push` na `main` publica uma nova versão automaticamente.
 
 Detalhes:
 - O Render informa a porta pela variável `PORT`, que a API usa automaticamente.
