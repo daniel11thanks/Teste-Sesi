@@ -308,7 +308,7 @@ O Figma só traz o layout de **desktop**; os demais tamanhos foram definidos por
 - **Contraste:** textos com contraste mínimo de 4,5:1 (a auditoria apontou e corrigimos o cargo dos depoimentos).
 - **Movimento:** respeita `prefers-reduced-motion`.
 - **Verificação automática:** (1) **axe-core** (WCAG 2.0/2.1/2.2 A e AA e boas práticas) em 9 telas, em desktop e celular — **0 violações** (`npm run test:a11y`); (2) conferência da **árvore de acessibilidade** do Chrome — a que os leitores de tela consomem — com 33 verificações: marcos e navegações nomeados, um único `h1`, rótulos dos campos, estados `expanded`/`disabled`, anúncio da contagem de resultados, nenhum controle sem nome (`npm run test:arvore`); (3) testes de teclado automatizados. Os testes foram validados injetando defeitos de acessibilidade de propósito (botão sem nome, `aria-expanded` removido etc.), todos detectados.
-- **Teste manual com leitor de tela real: pendente.** O roteiro (23 tarefas, com o que deve ser lido em cada uma) está em [docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md); o resultado ainda precisa ser executado e registrado ali.
+- **Teste manual com leitor de tela real: realizado de forma exploratória.** O candidato percorreu a aplicação com o **Narrador do Windows** (navegação por `Tab`, por títulos com `H`, por campos de formulário com `F` e pelas setas) e o Narrador leu o conteúdo percorrido, sem problemas relatados. A execução **item a item** do roteiro de 23 tarefas ([docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md)) não foi registrada; por isso comportamentos específicos (anúncio automático da contagem ao filtrar, estados expandido/recolhido dos acordeões, menu no celular) estão cobertos pela conferência automática da árvore de acessibilidade, mas não foram confirmados individualmente de ouvido.
 
 ## 11. Processo de publicação
 
@@ -359,7 +359,7 @@ Detalhes:
 - **Banco SQLite:** adequado a este volume e a uma instância; não é indicado para várias réplicas ou escrita concorrente. No plano gratuito do Render é recriado a cada início.
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
 - **Testes:** o back-end tem 63 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. **Não há pipeline de CI** (os testes são executados manualmente) nem testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
-- **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, mas o **teste manual com leitor de tela real ainda não foi executado** (roteiro pronto em `docs/teste-leitor-de-tela.md`).
+- **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, além de um teste **exploratório** com o Narrador do Windows. A execução **item a item** do roteiro com leitor de tela (`docs/teste-leitor-de-tela.md`) não foi registrada, e não houve teste com NVDA nem VoiceOver.
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 
 ## Uso de Inteligência Artificial

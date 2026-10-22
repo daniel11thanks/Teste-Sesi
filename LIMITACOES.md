@@ -8,7 +8,7 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 |---|---|
 | Cadastro, edição e exclusão de cursos | **Não feito** — o enunciado dispensa. Um painel administrativo seria a evolução natural. |
 | Integração com o Moodle | **Não feita** — o enunciado dispensa (diferencial). |
-| Teste manual com **leitor de tela real** (NVDA/Narrador) | **Pendente.** Há conferência automática da árvore de acessibilidade e auditoria axe-core (0 violações), e o roteiro do teste manual está pronto em [docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md); a execução e o registro ainda precisam ser feitos. |
+| Teste manual com **leitor de tela real** | **Feito em parte.** Teste exploratório com o **Narrador do Windows** (Tab, títulos, campos e setas), que leu o conteúdo percorrido sem problemas relatados. A execução item a item do roteiro ([docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md)) não foi registrada e não houve teste com NVDA nem VoiceOver. Há ainda a conferência automática da árvore de acessibilidade e a auditoria axe-core (0 violações). |
 | Pipeline de integração contínua (CI) | **Não feito** — os testes são executados manualmente. |
 | Testes unitários de componentes React isolados | **Não feitos** — a cobertura do front-end é de interface, de ponta a ponta. |
 

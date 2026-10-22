@@ -2,7 +2,7 @@
 
 Complementa as verificações automáticas (`npm run test:a11y`, que usa o axe-core, e `npm run test:arvore`, que confere a árvore de acessibilidade — papéis, nomes, níveis de título e estados — que o Chrome entrega aos leitores de tela). **Elas não substituem ouvir a aplicação sendo lida por um leitor de tela de verdade**; este roteiro serve para isso.
 
-> **Status:** _roteiro pronto; execução ainda não registrada._ Preencha o quadro abaixo depois de executar. Não registre como feito o que não foi testado.
+> **Status:** teste **exploratório realizado** com o Narrador do Windows (ver o registro no final). A execução **item a item** das tarefas abaixo **não foi registrada**; a coluna “Resultado” permanece em branco. Não registre como feito o que não foi testado.
 
 ## Preparação (5 min)
 
@@ -66,12 +66,14 @@ Marque ✅ se aconteceu, ❌ se não e anote o que foi lido.
 
 | Campo | Preencher |
 |---|---|
-| Data | |
-| Executado por | |
-| Leitor de tela e versão | |
-| Navegador e versão | |
-| Sistema operacional | |
-| Itens que passaram | ___ de 23 |
+| Data | 22/10/2026 |
+| Executado por | Daniel Oliveira (candidato) |
+| Leitor de tela e versão | Narrador do Windows (versão não registrada) |
+| Navegador e versão | não registrado |
+| Sistema operacional | Windows 11 |
+| Itens que passaram | não registrado item a item (teste exploratório, ver abaixo) |
+
+**O que foi feito:** o candidato navegou pela aplicação com o Narrador ligado, usando `Tab` para percorrer os controles, `H` para títulos, `F` para campos de formulário e as setas para ler o conteúdo. Segundo o relato, **o Narrador leu tudo o que foi percorrido**. Não foram relatados problemas. Não foi anotado quais das 23 tarefas foram cobertas, nem testadas as teclas de marcos (`D`) e botões (`B`) em todas as telas.
 
 **Problemas encontrados** (descreva o item, o que foi lido e o que era esperado):
 
