@@ -1,0 +1,128 @@
+.header {
+  position: relative;
+  z-index: 50;
+  background: var(--color-white);
+  color: var(--color-black);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.header--overlay {
+  position: fixed;
+  inset: 0 0 auto 0;
+}
+
+.header--claro {
+  background: transparent;
+  color: var(--color-white);
+  border-bottom-color: transparent;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-h);
+}
+
+.header__logo {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.header__logo img {
+  width: clamp(9rem, 14vw, 11.75rem);
+  height: auto;
+}
+
+.header__list {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header__link {
+  padding-block: 0.5rem;
+  font-size: var(--fs-button);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.header__link:hover,
+.header__link.active {
+  border-bottom-color: currentColor;
+}
+
+.header__button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  font-size: var(--fs-button);
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  transition: background-color 0.15s;
+}
+
+.header__button:hover {
+  background: rgb(128 128 128 / 0.18);
+}
+
+.header__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  color: inherit;
+}
+
+/* Tablet e celular: menu recolhido em painel. */
+@media (max-width: 52rem) {
+  .header__toggle {
+    display: inline-flex;
+  }
+
+  .header__nav {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    display: none;
+    padding: 0.5rem var(--gutter) 1.5rem;
+    background: var(--color-white);
+    color: var(--color-black);
+    border-bottom: 1px solid var(--color-line);
+    box-shadow: 0 12px 24px rgb(0 0 0 / 0.12);
+  }
+
+  .header--aberto .header__nav {
+    display: block;
+  }
+
+  .header__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .header__link {
+    display: block;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .header__link.active {
+    color: var(--color-red);
+    border-bottom-color: var(--color-line);
+  }
+
+  .header__button {
+    justify-content: center;
+    margin-top: 1rem;
+    padding-block: 0.8rem;
+  }
+}
