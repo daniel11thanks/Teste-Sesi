@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 using Sesi.Catalogo.Api.Data;
 using Sesi.Catalogo.Api.Dtos;
 using Sesi.Catalogo.Api.Models;
@@ -11,21 +13,42 @@ public static class CursosEndpoints
     {
         var api = app.MapGroup("/api");
 
-        api.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+        api.MapGet("/health", () => Results.Ok(new { status = "ok" }))
+            .WithTags("Sistema")
+            .WithMetadata(new SwaggerOperationAttribute("Verifica se a API está no ar."));
 
-        api.MapGet("/cursos", ListarAsync);
-        api.MapGet("/cursos/{id:int}", ObterAsync);
-        api.MapGet("/filtros", FiltrosAsync);
+        api.MapGet("/cursos", ListarAsync)
+            .WithTags("Cursos")
+            .WithMetadata(new SwaggerOperationAttribute(
+                "Lista cursos",
+                "Pesquisa por nome (sem distinção de acentos ou maiúsculas) e filtra por categoria, modalidade e status. Os parâmetros podem ser combinados."))
+            .Produces<ListaCursosDto>()
+            .ProducesProblem(StatusCodes.Status400BadRequest);
+
+        api.MapGet("/cursos/{id:int}", ObterAsync)
+            .WithTags("Cursos")
+            .WithMetadata(new SwaggerOperationAttribute(
+                "Detalha um curso",
+                "Retorna o curso com módulos, seções de aulas e avaliações, e perguntas frequentes."))
+            .Produces<CursoDetalheDto>()
+            .Produces(StatusCodes.Status404NotFound);
+
+        api.MapGet("/filtros", FiltrosAsync)
+            .WithTags("Cursos")
+            .WithMetadata(new SwaggerOperationAttribute(
+                "Lista as opções de filtro",
+                "Categorias, modalidades e status disponíveis, com o valor aceito pela API e o rótulo para exibição."))
+            .Produces<FiltrosDto>();
 
         return app;
     }
 
     private static async Task<IResult> ListarAsync(
         CatalogoDbContext db,
-        string? busca,
-        string? categoria,
-        string? modalidade,
-        string? status,
+        [FromQuery, SwaggerParameter("Trecho do nome do curso. Ex.: quimica")] string? busca,
+        [FromQuery, SwaggerParameter("Slug da categoria. Ex.: matematica, linguagens, ciencias-da-natureza, sustentabilidade")] string? categoria,
+        [FromQuery, SwaggerParameter("Online, Presencial ou Hibrido")] string? modalidade,
+        [FromQuery, SwaggerParameter("Disponivel, EmBreve ou Encerrado")] string? status,
         CancellationToken ct)
     {
         Modalidade? modalidadeFiltro = null;
