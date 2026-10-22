@@ -29,7 +29,7 @@ export default function Testimonials({ variant = 'dark' }) {
                 <span>{d.cargo}</span>
                 <span className="testimonial__stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
                   {[0, 1, 2, 3, 4].map((i) => (
-                    <Icon key={i} name="star" size={16} />
+                    <Icon key={i} name="star" size={18} />
                   ))}
                 </span>
               </figcaption>

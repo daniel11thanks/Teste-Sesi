@@ -36,5 +36,5 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Destinos de links sem ação no protótipo (Área do aluno, Sobre etc.) | Apontados para páginas existentes ou âncoras |
 | AVA: um item de menu por módulo do curso, busca no menu e menu recolhível no celular; texto da aula parametrizado | Necessário para servir a qualquer curso |
 | Container de conteúdo com largura máxima (1212 px) | O Figma escala o quadro com a janela |
-| Medidas e cores aproximadas (extraídas de prints; frame de 1440 px assumido) | O Dev Mode do Figma não estava acessível; o hero foi calibrado pixel a pixel com a referência |
+| Medidas e cores aproximadas (extraídas de prints; frame de 1440 px assumido) | O Dev Mode do Figma não estava acessível; o hero foi calibrado pixel a pixel e as demais seções por comparação lado a lado com os prints (pode haver diferenças de poucos pixels) |
 | Cores das etiquetas “Linguagens” e “Sustentabilidade”; favicon; fotos em WebP | Não constam no protótipo / otimização de 2,6–3,8 MB para 22–99 KB |

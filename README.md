@@ -344,7 +344,7 @@ Detalhes:
 | **Destinos de links sem ação no Figma** | “Área do aluno” e “Matricule-se” levam ao AVA; “Sobre” rola até “Impacto transformador”; “Mandar uma mensagem” abre um e-mail; “Cursos populares”, “Suporte” e “Blog” levam a páginas existentes. |
 | **AVA:** menu com um item por módulo do curso (o Figma mostra 6), busca que filtra o menu e menu recolhível no celular; texto da aula parametrizado pelo curso | Necessário para servir a qualquer curso do catálogo. |
 | **Container de conteúdo com largura máxima (1212 px)** | O Figma escala o quadro com a janela; aqui o conteúdo é centralizado com largura máxima para melhor leitura em telas grandes. |
-| **Medidas e cores do Figma são aproximações** | O Dev Mode não estava acessível; as medidas foram extraídas dos prints (px do print; frame de 1440 px assumido) e as cores por amostragem de pixels (±3). O hero foi calibrado comparando pixel a pixel com a referência (diferença média < 1/255 por canal). |
+| **Medidas e cores do Figma são aproximações** | O Dev Mode não estava acessível; as medidas foram extraídas dos prints (px do print; frame de 1440 px assumido) e as cores por amostragem de pixels (±3). O hero foi calibrado comparando pixel a pixel com a referência (diferença média < 1/255 por canal); os tamanhos de texto, as proporções das colunas e os espaçamentos das demais seções foram calibrados depois, comparando cada print do Figma com a aplicação renderizada (imagens lado a lado e medição de larguras de texto). |
 | **Cores das etiquetas “Linguagens” e “Sustentabilidade”** | Não aparecem no protótipo; escolhidas por nós. |
 | **Fotos em WebP e favicon próprio** | PNG de 2,6–3,8 MB otimizados para 22–99 KB; o Figma não traz favicon. |
 

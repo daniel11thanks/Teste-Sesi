@@ -43,11 +43,11 @@ export default function Carousel({ label, children, footer = null, variant = 'li
         <div>{footer}</div>
         <div className="carousel__arrows">
           <button type="button" className="carousel__arrow" onClick={() => mover(-1)} disabled={!podeVoltar}>
-            <Icon name="arrow-navigation" size={40} />
+            <Icon name="arrow-navigation" size={48} />
             <span className="sr-only">Anterior</span>
           </button>
           <button type="button" className="carousel__arrow" onClick={() => mover(1)} disabled={!podeAvancar}>
-            <Icon name="arrow-navigation-1" size={40} />
+            <Icon name="arrow-navigation-1" size={48} />
             <span className="sr-only">Próximo</span>
           </button>
         </div>

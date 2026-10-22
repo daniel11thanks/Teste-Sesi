@@ -12,7 +12,7 @@ export default function Button({ to, href, variant = 'light', arrow = false, chi
   const conteudo = (
     <>
       {children}
-      {arrow && <Icon name="arrow-navigation-1" size={20} />}
+      {arrow && <Icon name="arrow-navigation-1" size={26} />}
     </>
   )
 

@@ -1,5 +1,5 @@
 .testimonials {
-  padding-block: var(--space-section) 1rem;
+  padding-block: var(--space-section) 4.5rem;
   color: var(--color-white);
   background: var(--color-red-deep);
 }
@@ -14,7 +14,7 @@
 }
 
 .testimonials__label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -51,15 +51,15 @@
 
 .testimonial__quote {
   margin: 0;
-  font-size: 1.0875rem;
-  line-height: 1.55;
+  font-size: 1.1875rem;
+  line-height: 1.44;
 }
 
 .testimonial__author {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  font-size: 0.8125rem;
+  font-size: 0.93rem;
 }
 
 .testimonial__author strong {

@@ -47,7 +47,7 @@
 }
 
 .hero__text {
-  max-width: 36rem;
+  max-width: 30rem;
   font-size: 1.125rem;
   line-height: 1.5;
   color: #ffede3;
@@ -64,21 +64,21 @@
 
 /* Impacto transformador */
 .impact {
-  padding-block: var(--space-section);
+  padding-block: 9rem 5rem;
 }
 
 .impact__grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
-  gap: 3rem clamp(2rem, 5vw, 4.5rem);
+  grid-template-columns: 33.8% minmax(0, 1fr);
+  gap: 3rem 0;
   align-items: start;
 }
 
 .impact__text {
-  max-width: 22rem;
+  max-width: 20rem;
   margin-top: 1.5rem;
-  font-size: 1.125rem;
-  line-height: 1.5;
+  font-size: var(--fs-text);
+  line-height: 1.42;
 }
 
 .stats__row {
@@ -92,12 +92,12 @@
 
 .stats__value {
   margin: 0;
-  font-size: clamp(2.5rem, 1.6rem + 3vw, 3.75rem);
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem);
   line-height: 1.2;
 }
 
 .stats__label {
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
   font-weight: 600;
   text-align: right;
 }
@@ -109,15 +109,12 @@
   margin-top: 2.5rem;
 }
 
+/* O SVG já traz a caixa colorida (48 px): desenhado no tamanho do Figma, sem segunda caixa. */
 .benefit__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
+  display: block;
+  width: 3.25rem;
+  height: 3.25rem;
   margin-bottom: 1rem;
-  background: var(--color-red-tint);
-  border-radius: var(--radius);
 }
 
 .benefit__title {
@@ -134,7 +131,7 @@
 
 /* Chamada final */
 .cta {
-  padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--space-section);
+  padding-block: 0 4.25rem;
   color: var(--color-white);
   background: var(--color-red-deep);
   border-top: 1px solid rgb(255 255 255 / 0.18);
@@ -142,9 +139,13 @@
 
 .cta__grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: 2.5rem;
+  grid-template-columns: 35.2% minmax(0, 1fr);
+  gap: 2.5rem 0;
   align-items: center;
+}
+
+.cta__grid > div:first-child {
+  padding-right: 2rem;
 }
 
 .cta__title {
@@ -156,8 +157,8 @@
 
 .cta__text {
   margin-block: 1.5rem;
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 1.1875rem;
+  line-height: 1.45;
   color: #ffede3;
 }
 
@@ -179,17 +180,29 @@
   display: grid;
   place-items: center;
   margin: auto;
-  width: 5rem;
-  height: 5rem;
+  width: 5.25rem;
+  height: 5.25rem;
   color: var(--color-black);
   background: var(--color-white);
   border-radius: 50%;
 }
 
 @media (max-width: 60rem) {
+  .impact {
+    padding-block: var(--space-section);
+  }
+
   .impact__grid,
   .cta__grid {
     grid-template-columns: 1fr;
+  }
+
+  .cta__grid > div:first-child {
+    padding-right: 0;
+  }
+
+  .cta {
+    padding-top: 2.5rem;
   }
 
   .impact__text,

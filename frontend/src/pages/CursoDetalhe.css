@@ -6,10 +6,14 @@
 /* Hero do curso */
 .detail-hero {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: 2.5rem clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 42.2% minmax(0, 1fr);
+  gap: 2.5rem 0;
   align-items: center;
   padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.detail-hero__info {
+  padding-right: 3.2rem;
 }
 
 .detail-hero__tags {
@@ -36,7 +40,7 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-block: 1.25rem 1.5rem;
-  font-size: 1rem;
+  font-size: 1.0625rem;
   color: #181818;
 }
 
@@ -86,15 +90,12 @@
   gap: 1.5rem;
 }
 
+/* O SVG já traz a caixa bege (48 px): desenhado no tamanho do Figma, sem segunda caixa. */
 .detail-benefits__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
+  display: block;
+  width: 3.25rem;
+  height: 3.25rem;
   margin-bottom: 1rem;
-  background: #fbd19b;
-  border-radius: var(--radius);
 }
 
 .detail-benefits h3 {
@@ -112,8 +113,8 @@
 /* Sobre o curso */
 .about {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
-  gap: 2rem clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: 37.3% minmax(0, 1fr);
+  gap: 2rem 0;
   align-items: start;
   padding-bottom: var(--space-section);
 }
@@ -125,17 +126,19 @@
 }
 
 .about__text {
+  max-width: 24.5rem;
   margin-top: 1.25rem;
-  line-height: 1.6;
+  font-size: 1.225rem;
+  line-height: 1.42;
 }
 
 .syllabus > li,
 .syllabus > section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.7rem;
 }
 
 .syllabus h4 {
-  font-size: 1rem;
+  font-size: inherit;
   font-weight: 700;
   line-height: 1.4;
   color: var(--color-black);
@@ -151,13 +154,13 @@
 
 .bullets li {
   position: relative;
-  padding-left: 1.1rem;
+  padding-left: 1.75rem;
 }
 
 .bullets li::before {
   content: '•';
   position: absolute;
-  left: 0.2rem;
+  left: 0.5rem;
 }
 
 /* Fale com a gente */
@@ -176,7 +179,7 @@
 }
 
 .contact__label {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -227,6 +230,10 @@
   .detail-hero,
   .about {
     grid-template-columns: 1fr;
+  }
+
+  .detail-hero__info {
+    padding-right: 0;
   }
 
   .detail-benefits {

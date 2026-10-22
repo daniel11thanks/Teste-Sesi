@@ -59,6 +59,12 @@ Depois de testar rótulos, foco e teclado manualmente, uma auditoria automática
 
 **Correção:** cor cheia no cargo (sobre o vermelho); link estendido a partir do título do card (o nome acessível passa a ser o título visível); trilha do carrossel focável (`tabindex="0"` com rótulo); nome distinto para o carrossel; nível de título configurável (`h1` nas telas de página inteira). A auditoria passa a retornar zero violações nas 9 telas, em desktop e celular, e ficou no repositório como teste.
 
+### Terceiro exemplo: tamanhos de texto subestimados
+
+Os tamanhos de fonte da primeira versão foram **estimados pela IA a partir da altura das letras maiúsculas** nos prints do Figma. Uma comparação lado a lado de cada print com a aplicação renderizada (imagem do Figma em cima, a nossa embaixo, no mesmo trecho e na mesma escala) mostrou que **quase todos os textos estavam de 6% a 30% menores** que o protótipo (títulos de cards, depoimentos, botões, acordeões, FAQ), além de outros desvios: os ícones de benefício apareciam minúsculos porque os SVGs fornecidos já trazem a caixa colorida e a IA os colocou dentro de uma segunda caixa; e as proporções de coluna do Impacto, do CTA e do AVA divergiam.
+
+**Correção:** os tamanhos passaram a ser calibrados por **medida** (largura de uma mesma linha de texto no Figma e na aplicação), as colunas foram ajustadas às proporções do protótipo e os ícones passaram a ser usados no tamanho original. Depois do ajuste, a quebra de linha dos títulos de cards, do CTA e do rodapé ficou igual à do Figma, e as suítes de interface e de acessibilidade (inclusive contraste) continuaram passando.
+
 ### Imagens pesadas
 
 As fotos fornecidas (PNG de 2,6 a 3,8 MB) foram aplicadas direto pela IA nas telas. Ao revisar o peso da página, foram convertidas para WebP (22 a 99 KB, sem perda visível), com script em `frontend/scripts/otimizar-imagens.mjs` e uma migration de dados para atualizar o caminho da imagem em bancos já criados.

@@ -49,15 +49,15 @@
 }
 
 .course-card__title {
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   font-weight: 700;
   line-height: 1.28;
 }
 
 .course-card__text {
   margin-top: 0.75rem;
-  font-size: 0.9375rem;
-  line-height: 1.45;
+  font-size: 1.04rem;
+  line-height: 1.4;
   color: rgb(255 255 255 / 0.92);
 }
 

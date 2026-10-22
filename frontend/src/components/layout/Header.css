@@ -30,7 +30,7 @@
 }
 
 .header__logo img {
-  width: clamp(9rem, 14vw, 11.75rem);
+  width: clamp(9rem, 14vw, 12.4rem);
   height: auto;
 }
 

@@ -151,7 +151,7 @@ function Hero({ curso }) {
       <figure className="detail-hero__video">
         <img src="/assets/video-thumb.webp" alt="Profissionais da indústria durante um treinamento" />
         <span className="detail-hero__play" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
         </span>
@@ -188,9 +188,7 @@ function Beneficios() {
       <ul className="detail-benefits">
         {BENEFICIOS.map((b) => (
           <li key={b.titulo}>
-            <span className="detail-benefits__icon">
-              <img src={`/assets/${b.icone}.svg`} alt="" width="24" height="24" />
-            </span>
+            <img className="detail-benefits__icon" src={`/assets/${b.icone}.svg`} alt="" width="52" height="52" />
             <h3>{b.titulo}</h3>
             <p>{b.texto}</p>
           </li>
