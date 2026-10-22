@@ -1,0 +1,34 @@
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  font-size: var(--fs-tag);
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 999px;
+  background: #eee;
+  color: #333;
+}
+
+.status__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status--disponivel {
+  background: #e3f4e1;
+  color: #1d5e1a;
+}
+
+.status--embreve {
+  background: #fff0d4;
+  color: #7a4a00;
+}
+
+.status--encerrado {
+  background: #ececec;
+  color: #4d4d4d;
+}
