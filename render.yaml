@@ -1,0 +1,14 @@
+# Blueprint do Render (plano gratuito): cria o serviço web a partir do Dockerfile da raiz.
+# Uso: Render → New → Blueprint → selecionar este repositório.
+services:
+  - type: web
+    name: catalogo-sesi
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Mantém o Swagger acessível na versão publicada (a API é somente leitura).
+      - key: Swagger__Habilitado
+        value: "true"
