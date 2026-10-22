@@ -124,7 +124,7 @@ Decisões principais:
 ├── docs/design/                       # extração do protótipo do Figma (textos, cores, interações, prints)
 ├── docs/teste-leitor-de-tela.md       # roteiro do teste manual com leitor de tela
 ├── Dockerfile  docker-compose.yml  render.yaml
-├── README.md  USO_DE_IA.md
+├── README.md  USO_DE_IA.md  LIMITACOES.md  RELACAO_DE_ARQUIVOS.md
 ```
 
 ## 5. Instruções para execução
