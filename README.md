@@ -425,6 +425,7 @@ Detalhes:
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
 - **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. O front-end também tem 68 testes unitários (Vitest). A CI roda tudo a cada push, exceto o carrossel (arrasto e inércia), que só tem teste de interface por depender de layout real.
 - **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, além de um teste **exploratório** com o Narrador do Windows. A execução **item a item** do roteiro com leitor de tela (`docs/teste-leitor-de-tela.md`) não foi registrada, e não houve teste com NVDA nem VoiceOver.
+- **Segurança HTTP:** a API não envia cabeçalhos de segurança (como `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` e uma política de conteúdo, CSP), e o `/api/health` não confere o banco. Foi uma escolha consciente: a aplicação é pública e somente de leitura, sem login nem dados pessoais, os filtros recebidos são validados (400 para valores inválidos) e o acesso ao banco usa consultas parametrizadas do EF Core. Os cabeçalhos seriam o próximo passo (a CSP exige calibrar fontes, imagens e o Swagger para não quebrar a página), assim como uma rota de prontidão separada que consulte o banco.
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 
 ## Uso de Inteligência Artificial
