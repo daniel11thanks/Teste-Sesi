@@ -9,7 +9,7 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Cadastro, edição e exclusão de cursos | **Não feito** — o enunciado dispensa. Um painel administrativo seria a evolução natural. |
 | Integração com o Moodle | **Parcial.** Só há uma **exportação em CSV** (`GET /api/cursos/exportacao/moodle.csv`, ver README 7.1): sem conexão com um Moodle em execução, **não testada em um Moodle real** e sem exportar módulos, aulas e FAQ. Não está no front-end porque a aplicação é a área do aluno e exportar é uma tarefa administrativa; a rota é aberta porque o enunciado não prevê login |
 | Teste manual com **leitor de tela real** | **Feito em parte.** Teste exploratório com o **Narrador do Windows** (Tab, títulos, campos e setas), que leu o conteúdo percorrido sem problemas relatados. A execução item a item do roteiro ([docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md)) não foi registrada e não houve teste com NVDA nem VoiceOver. Há ainda a conferência automática da árvore de acessibilidade e a auditoria axe-core (0 violações). |
-| Pipeline de integração contínua (CI) | **Não feito** — os testes são executados manualmente. |
+| Pipeline de integração contínua (CI) | **Feito** (GitHub Actions: testes do back-end, lint e build do front-end e testes de interface/acessibilidade contra a aplicação em Docker). Limite: não faz deploy, que continua sendo do autoDeploy do Render, e o resultado do CI não bloqueia esse deploy |
 | Testes unitários de componentes React isolados | **Não feitos** — a cobertura do front-end é de interface, de ponta a ponta. |
 
 ## Limitações conhecidas

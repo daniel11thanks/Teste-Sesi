@@ -1,5 +1,7 @@
 # Catálogo de Cursos — SESI Indústria
 
+[![CI](https://github.com/daniel11thanks/Teste-Sesi/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/daniel11thanks/Teste-Sesi/actions/workflows/ci.yml)
+
 Aplicação web de catálogo de cursos para um ambiente virtual de aprendizagem (AVA), desenvolvida como atividade prática do processo seletivo de **Desenvolvedor de Sistemas I**. Todos os dados são fictícios.
 
 | | |
@@ -189,6 +191,14 @@ npm run test:arvore   # árvore de acessibilidade: marcos, nomes, títulos e est
 ```
 
 Os testes de interface pressupõem o banco com o seed original (8 cursos) e foram executados também contra o container Docker e contra o site publicado.
+
+**Integração contínua (GitHub Actions)** — `.github/workflows/ci.yml` roda a cada push na `main` e em pull requests, numa máquina Linux limpa, com três jobs em paralelo:
+
+1. **Back-end:** os 90 testes xUnit (.NET 10);
+2. **Front-end:** lint e build de produção;
+3. **Interface e acessibilidade:** sobe a aplicação inteira com `docker compose up --build` (o mesmo caminho da produção) e roda, contra ela, os testes de interface (catálogo, detalhes, carrossel), a auditoria axe-core e a árvore de acessibilidade, com o Chrome da própria máquina.
+
+Como o log completo do Actions exige login para ser lido, os scripts de teste publicam as linhas de erro como anotações (`.github/scripts/executar-com-anotacoes.sh`), visíveis no topo da execução. Verificado de propósito: uma branch descartável com dois defeitos injetados (um valor errado num teste do back-end e um texto alterado no front-end) deixou o CI vermelho nos jobs correspondentes, e a branch foi apagada em seguida.
 
 ## 6. Configuração do banco
 
@@ -390,7 +400,7 @@ Detalhes:
 - **Páginas de apoio inexistentes:** Termos de Uso, Política de Privacidade, Blog etc. não têm conteúdo.
 - **Banco SQLite:** adequado a este volume e a uma instância; não é indicado para várias réplicas ou escrita concorrente. No plano gratuito do Render é recriado a cada início.
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
-- **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. **Não há pipeline de CI** (os testes são executados manualmente) nem testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
+- **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. A CI roda os testes a cada push, mas não há testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
 - **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, além de um teste **exploratório** com o Narrador do Windows. A execução **item a item** do roteiro com leitor de tela (`docs/teste-leitor-de-tela.md`) não foi registrada, e não houve teste com NVDA nem VoiceOver.
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 

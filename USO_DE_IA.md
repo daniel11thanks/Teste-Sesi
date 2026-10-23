@@ -75,6 +75,10 @@ A IA propôs e implementou um endpoint que gera o CSV da ferramenta “Carregar 
 
 Um teste automatizado revelou um erro da IA no próprio gerador: o `WebUtility.HtmlEncode` do .NET converte **cada letra acentuada em entidade numérica** (`ç` vira `&#231;`), o que deixaria o CSV ilegível. Foi trocado por um escape só dos caracteres de marcação (`& < > " '`).
 
+### Pipeline de CI (GitHub Actions)
+
+O candidato nunca havia configurado CI; a IA explicou o conceito antes e o fluxo foi combinado assim: desenvolver numa branch separada, ver o resultado e só então juntar na `main`. O workflow passou verde na primeira execução, o que não prova que ele detecta falhas; por isso foi criada uma branch descartável com dois defeitos injetados de propósito, e o CI ficou vermelho nos jobs esperados (a branch foi apagada). Como o log do Actions exige login, a IA criou um script que transforma as linhas de erro em anotações, legíveis também pela API pública.
+
 ### Outros problemas da IA corrigidos durante o desenvolvimento
 
 - **Migration não aplicada:** a API foi iniciada com `dotnet run --no-build` usando um binário anterior à migration, e falhou com "no such table: Cursos". Corrigido recompilando antes de rodar.

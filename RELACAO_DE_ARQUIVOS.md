@@ -34,6 +34,7 @@ Abra http://localhost:8080 (Swagger em http://localhost:8080/swagger). Alternati
 | `backend/src/Sesi.Catalogo.Api/Exportacao/` | Gerador do CSV de exportação para o Moodle (diferencial; endpoint `GET /api/cursos/exportacao/moodle.csv`) |
 | `backend/tests/Sesi.Catalogo.Api.Tests/` | 90 testes xUnit do back-end |
 | `frontend/` | Front-end React + Vite: `src/` (páginas e componentes), `public/` (fontes, ícones e imagens do Figma, ilustrações dos cursos), `e2e/` (testes de interface e de acessibilidade), `scripts/` |
+| `.github/workflows/ci.yml` e `.github/scripts/` | Pipeline de integração contínua (GitHub Actions): testes do back-end, lint e build do front-end e testes de interface/acessibilidade contra a aplicação em Docker |
 | `docs/design/` | Extração do protótipo do Figma (textos, cores, interações e prints de referência) |
 | `docs/teste-leitor-de-tela.md` | Roteiro do teste manual com leitor de tela |
 | `README.md` | Documentação técnica (objetivo, arquitetura, execução, banco, endpoints, modelo de dados, responsividade, acessibilidade, publicação, limitações) |
