@@ -32,7 +32,7 @@
 - **Compilação e lint** a cada etapa (`dotnet build`, `npm run build`, `npm run lint`).
 - **Chamadas reais à API** (busca, filtros combinados, valores inválidos, 404) antes de usar no front-end.
 - **Comparação visual** com os prints do Figma, em 1440, 768 e 390 px, usando capturas do Chrome.
-- **Testes do back-end** (`backend/tests/`, xUnit, 63 testes) — e uma **verificação por mutação**: defeitos injetados de propósito no código (busca sem normalização, filtros ignorados, validação removida) para confirmar que os testes realmente falham quando deveriam.
+- **Testes do back-end** (`backend/tests/`, xUnit, 90 testes) — e uma **verificação por mutação**: defeitos injetados de propósito no código (busca sem normalização, filtros ignorados, validação removida) para confirmar que os testes realmente falham quando deveriam.
 - **Testes automatizados de interface** (`frontend/e2e/`, com Chrome headless e axe-core) cobrindo busca, filtros combinados, contagem, limpar filtros, link direto, botão Voltar, estados de carregamento, erro e vazio, acessibilidade básica e ausência de rolagem horizontal em 390 px.
 - **Revisão do candidato** de todo o código antes de cada commit.
 
@@ -68,6 +68,12 @@ Os tamanhos de fonte da primeira versão foram **estimados pela IA a partir da a
 ### Imagens pesadas
 
 As fotos fornecidas (PNG de 2,6 a 3,8 MB) foram aplicadas direto pela IA nas telas. Ao revisar o peso da página, foram convertidas para WebP (22 a 99 KB, sem perda visível), com script em `frontend/scripts/otimizar-imagens.mjs` e uma migration de dados para atualizar o caminho da imagem em bancos já criados.
+
+### Exportação para o Moodle (diferencial)
+
+A IA propôs e implementou um endpoint que gera o CSV da ferramenta “Carregar cursos” do Moodle. Duas decisões foram do candidato: **não colocar a exportação no front-end** (é uma tarefa administrativa e a aplicação é a área do aluno; a IA tinha sugerido um link no catálogo e a sugestão foi descartada) e **não tentar uma integração ao vivo** (não há Moodle disponível para testar). O formato foi conferido por busca na documentação oficial (a página direta bloqueou o acesso automático com HTTP 403, então só os campos obrigatórios e o exemplo oficial foram confirmados; o README diz quais colunas não puderam ser confirmadas e que a importação não foi testada em um Moodle real).
+
+Um teste automatizado revelou um erro da IA no próprio gerador: o `WebUtility.HtmlEncode` do .NET converte **cada letra acentuada em entidade numérica** (`ç` vira `&#231;`), o que deixaria o CSV ilegível. Foi trocado por um escape só dos caracteres de marcação (`& < > " '`).
 
 ### Outros problemas da IA corrigidos durante o desenvolvimento
 

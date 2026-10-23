@@ -47,7 +47,7 @@ Funcionalidades obrigatórias do enunciado e onde estão:
 | Mensagem em caso de erro | Mensagens distintas para falha do servidor e falta de conexão, com “Tentar novamente” |
 | Interface funcional em diferentes tamanhos de tela | Ver [responsividade](#9-estratégia-de-responsividade) |
 
-Não há cadastro, edição ou exclusão de cursos (o enunciado dispensa) nem integração com o Moodle.
+Não há cadastro, edição ou exclusão de cursos (o enunciado dispensa) nem integração ao vivo com o Moodle; como diferencial, há uma **exportação em CSV compatível com o Moodle** (ver [7.1](#71-integração-com-o-moodle-diferencial-exportação-em-csv)).
 
 **Telas:** Landing (`/`), Catálogo (`/cursos`), Detalhes do curso (`/cursos/:id`), AVA (`/ava/:id`) e Página não encontrada.
 
@@ -99,10 +99,11 @@ Decisões principais:
 .
 ├── backend/
 │   ├── Sesi.Catalogo.sln
-│   ├── tests/Sesi.Catalogo.Api.Tests/   # 63 testes xUnit (API, busca, seed, migrations)
+│   ├── tests/Sesi.Catalogo.Api.Tests/   # 90 testes xUnit (API, busca, seed, migrations, exportação)
 │   └── src/Sesi.Catalogo.Api/
 │       ├── Program.cs                 # configuração, Swagger, arquivos estáticos, fallback da SPA
 │       ├── Endpoints/CursosEndpoints.cs
+│       ├── Exportacao/MoodleCsv.cs    # gerador do CSV para o Moodle
 │       ├── Models/                    # Curso, Categoria, Modulo, SecaoConteudo, Faq, enums
 │       ├── Dtos/                      # contratos de resposta e mapeamento
 │       └── Data/
@@ -171,10 +172,10 @@ Para gerar o front-end de produção e servi-lo pela própria API: `npm run buil
 
 ```bash
 cd backend
-dotnet test           # 63 testes xUnit
+dotnet test           # 90 testes xUnit
 ```
 
-Cobrem, pela API real em memória: listagem, pesquisa sem acentos/maiúsculas, cada filtro isolado e combinado, valores inválidos (400), detalhe, 404 em JSON, compressão, a normalização da busca, os mínimos do enunciado no seed (≥ 6 cursos, ≥ 3 categorias, ≥ 2 modalidades, ≥ 3 status), idempotência do seed e as migrations (incluindo a migration de dados aplicada a um banco “antigo”). Foi feita também uma verificação por mutação: defeitos injetados de propósito (busca sem normalização, filtros ignorados, 400 removido) são detectados pelos testes.
+Cobrem, pela API real em memória: listagem, pesquisa sem acentos/maiúsculas, cada filtro isolado e combinado, valores inválidos (400), detalhe, 404 em JSON, compressão, a normalização da busca, os mínimos do enunciado no seed (≥ 6 cursos, ≥ 3 categorias, ≥ 2 modalidades, ≥ 3 status), idempotência do seed, as migrations (incluindo a migration de dados aplicada a um banco “antigo”) e a exportação para o Moodle (cabeçalho, escape de campos lido por um leitor de CSV, mapeamento, filtros e HTML do resumo). Foi feita também uma verificação por mutação: defeitos injetados de propósito (busca sem normalização, filtros ignorados, 400 removido, escape do CSV removido, todos os cursos visíveis) são detectados pelos testes.
 
 **Front-end** — com a API e o `npm run dev` rodando (ou `BASE_URL=http://localhost:8080` apontando para o container) e o Google Chrome instalado (caminho alterável com `CHROME_PATH`):
 
@@ -224,6 +225,7 @@ Base: `/api`. Respostas em JSON. Documentação interativa em `/swagger`.
 | `GET` | `/api/cursos` | Lista cursos, com pesquisa e filtros combináveis |
 | `GET` | `/api/cursos/{id}` | Detalhe do curso (módulos, aulas/avaliações, perguntas frequentes) |
 | `GET` | `/api/filtros` | Categorias, modalidades e status disponíveis (valor e rótulo) |
+| `GET` | `/api/cursos/exportacao/moodle.csv` | Exporta cursos em CSV para a ferramenta “Carregar cursos” do Moodle (aceita os filtros da listagem; ver [7.1](#71-integração-com-o-moodle-diferencial-exportação-em-csv)) |
 | `GET` | `/api/health` | Verificação de saúde (`{"status":"ok"}`) |
 
 **`GET /api/cursos`** — parâmetros de consulta (todos opcionais):
@@ -266,6 +268,34 @@ GET /api/cursos?busca=matematica&categoria=matematica&status=Disponivel
 |---|---|
 | `400` | `modalidade` ou `status` com valor inválido |
 | `404` | Curso inexistente (`/api/cursos/999`) ou rota `/api/...` desconhecida |
+
+### 7.1 Integração com o Moodle (diferencial): exportação em CSV
+
+O enunciado cita a integração com o Moodle como **diferencial** (não obrigatória). Como não há um Moodle disponível para integrar, foi implementada uma **exportação**: um endpoint que gera o arquivo CSV da ferramenta **“Carregar cursos”** do Moodle (Administração do site → Cursos → Carregar cursos) a partir dos cursos do catálogo.
+
+`GET /api/cursos/exportacao/moodle.csv` aceita os **mesmos filtros** de `/api/cursos` (`busca`, `categoria`, `modalidade`, `status`) e devolve o arquivo `cursos-moodle.csv` (UTF-8 sem BOM, separado por vírgula, linhas em CRLF) para download. Ele também aparece no Swagger, na seção **“Integração com o Moodle”**.
+
+As colunas são **derivadas dos dados que o catálogo já tem**; nenhum campo foi acrescentado ao banco ou à API de cursos.
+
+| Coluna do Moodle | Origem no catálogo | Observação |
+|---|---|---|
+| `shortname` | Nome breve | Obrigatório e único no Moodle |
+| `fullname` | Nome completo | Obrigatório |
+| `category_path` | Nome da categoria (ex.: `Matemática`) | Obrigatória; **a categoria precisa existir antes no Moodle** |
+| `summary` | Descrição, em HTML | Carga horária, modalidade, público-alvo e status vão como lista dentro do resumo, pois o Moodle não tem esses campos nativos |
+| `startdate` | Data de disponibilização | Formato `AAAA-MM-DD`; vazio quando o curso não tem data |
+| `visible` | Status | Disponível = `1`; Em breve e Encerrado = `0` (o Moodle só distingue visível e oculto) |
+| `idnumber` | Calculado (`SESI-001`, `SESI-002`…) | Identificador estável, útil para reimportar |
+| `format` / `lang` | Valores fixos `topics` / `pt_br` | Padrões do Moodle |
+
+**Como importar:** (1) crie no Moodle as 4 categorias com os mesmos nomes do catálogo (Matemática, Linguagens, Ciências da Natureza, Sustentabilidade); (2) em *Administração do site → Cursos → Carregar cursos*, envie o arquivo; (3) confira a pré-visualização e confirme.
+
+**Por que não está no front-end:** esta aplicação implementa a **área do aluno** (consultar, pesquisar e ver detalhes dos cursos). Exportar cursos para o Moodle é uma tarefa **administrativa**, que não faz sentido numa tela voltada ao aluno; por isso a funcionalidade existe apenas como endpoint da API (e no Swagger), sem botão ou link na interface. Numa aplicação completa ela ficaria numa área administrativa autenticada; aqui a rota é aberta porque o enunciado não prevê login nem área administrativa, e os dados exportados são os mesmos que o catálogo já mostra a qualquer visitante.
+
+**Limitações, com franqueza:**
+- É um **arquivo gerado**, não uma integração com um Moodle em execução: nada é enviado ao Moodle nem lido dele.
+- A importação **não foi testada em um Moodle real**. Os campos obrigatórios (`shortname`, `fullname` e a categoria por `category_path`) e o exemplo com `summary` seguem a documentação oficial do Moodle. As demais colunas (`startdate`, `visible`, `idnumber`, `format`, `lang`) são campos de curso conhecidos do Moodle, mas **não pude confirmá-las** na documentação consultada; se alguma for rejeitada, basta apagá-la do arquivo (só as três primeiras são obrigatórias).
+- Módulos, aulas e perguntas frequentes **não** são exportados (exigiriam backup/restauração de curso ou os web services do Moodle).
 
 ## 8. Modelo de dados
 
@@ -352,7 +382,7 @@ Detalhes:
 
 ### Limitações e itens não concluídos
 
-- **Sem CRUD de cursos e sem integração com o Moodle** (fora do escopo definido no enunciado). Um painel administrativo seria a evolução natural.
+- **Sem CRUD de cursos** (fora do escopo definido no enunciado); um painel administrativo seria a evolução natural. A **integração com o Moodle** é apenas uma exportação em CSV ([7.1](#71-integração-com-o-moodle-diferencial-exportação-em-csv)): sem conexão com um Moodle em execução, não testada em um Moodle real, e fora da interface do aluno por ser uma tarefa administrativa.
 - **AVA ilustrativo:** os itens do menu (aulas e módulos) não são navegáveis (o protótipo também não define essa navegação), o progresso (10%) é fixo e há apenas o conteúdo da aula “Boas práticas”.
 - **Sem autenticação e sem matrícula real:** “Matricule-se” e “Área do aluno” apenas levam ao AVA de demonstração.
 - **Vídeo:** a miniatura com botão de reprodução é decorativa; não há player.
@@ -360,7 +390,7 @@ Detalhes:
 - **Páginas de apoio inexistentes:** Termos de Uso, Política de Privacidade, Blog etc. não têm conteúdo.
 - **Banco SQLite:** adequado a este volume e a uma instância; não é indicado para várias réplicas ou escrita concorrente. No plano gratuito do Render é recriado a cada início.
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
-- **Testes:** o back-end tem 63 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. **Não há pipeline de CI** (os testes são executados manualmente) nem testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
+- **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. **Não há pipeline de CI** (os testes são executados manualmente) nem testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
 - **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, além de um teste **exploratório** com o Narrador do Windows. A execução **item a item** do roteiro com leitor de tela (`docs/teste-leitor-de-tela.md`) não foi registrada, e não houve teste com NVDA nem VoiceOver.
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 

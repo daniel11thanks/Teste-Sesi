@@ -31,7 +31,8 @@ Abra http://localhost:8080 (Swagger em http://localhost:8080/swagger). Alternati
 | `backend/src/Sesi.Catalogo.Api/` | API em C#/.NET 10: endpoints (`Endpoints/`), modelos (`Models/`), contratos (`Dtos/`), acesso a dados (`Data/`) |
 | `backend/src/Sesi.Catalogo.Api/Data/Migrations/` | **Migrations do banco** (SQLite): `Inicial` e `AtualizaImagemBanner` |
 | `backend/src/Sesi.Catalogo.Api/Data/SeedData.cs` | **Dados fictícios** (8 cursos), carregados automaticamente no primeiro início |
-| `backend/tests/Sesi.Catalogo.Api.Tests/` | 63 testes xUnit do back-end |
+| `backend/src/Sesi.Catalogo.Api/Exportacao/` | Gerador do CSV de exportação para o Moodle (diferencial; endpoint `GET /api/cursos/exportacao/moodle.csv`) |
+| `backend/tests/Sesi.Catalogo.Api.Tests/` | 90 testes xUnit do back-end |
 | `frontend/` | Front-end React + Vite: `src/` (páginas e componentes), `public/` (fontes, ícones e imagens do Figma, ilustrações dos cursos), `e2e/` (testes de interface e de acessibilidade), `scripts/` |
 | `docs/design/` | Extração do protótipo do Figma (textos, cores, interações e prints de referência) |
 | `docs/teste-leitor-de-tela.md` | Roteiro do teste manual com leitor de tela |
