@@ -1,0 +1,107 @@
+# Integração contínua: a cada push e pull request, roda os testes do projeto em uma máquina Linux limpa.
+#   1. Back-end:  90 testes xUnit (.NET 10)
+#   2. Front-end: lint e build (React + Vite)
+#   3. Interface: sobe a aplicação inteira com docker compose (o mesmo caminho da produção) e roda os testes de
+#                 interface, o axe-core e a conferência da árvore de acessibilidade, com o Chrome da própria máquina.
+name: CI
+
+on:
+  push:
+    branches: [main, "ci/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Um novo push cancela a execução anterior da mesma branch, para não acumular filas.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Back-end (testes .NET)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Testes xUnit
+        run: bash .github/scripts/executar-com-anotacoes.sh dotnet test backend/tests/Sesi.Catalogo.Api.Tests/Sesi.Catalogo.Api.Tests.csproj --configuration Release
+
+  frontend:
+    name: Front-end (lint e build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Lint
+        run: bash ../.github/scripts/executar-com-anotacoes.sh npm run lint
+      - name: Build de produção
+        run: bash ../.github/scripts/executar-com-anotacoes.sh npm run build
+
+  interface:
+    name: Interface e acessibilidade (aplicação em Docker)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BASE_URL: http://localhost:8080
+      CHROME_PATH: /usr/bin/google-chrome
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Sobe a aplicação (docker compose)
+        run: docker compose up -d --build
+
+      - name: Aguarda a aplicação responder
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8080/api/health > /dev/null; then echo "aplicação no ar após ${i} tentativa(s)"; exit 0; fi
+            sleep 2
+          done
+          echo "::error title=Aplicação não subiu::/api/health não respondeu em 2 minutos"
+          docker compose logs --tail 30 | head -30 | while IFS= read -r l; do echo "::warning::${l:0:300}"; done
+          exit 1
+
+      - name: Instala as dependências dos testes
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Versão do Chrome
+        run: ${{ env.CHROME_PATH }} --version
+
+      - name: Interface — catálogo
+        working-directory: frontend
+        run: bash ../.github/scripts/executar-com-anotacoes.sh node e2e/catalogo.mjs
+      - name: Interface — detalhes do curso e AVA
+        working-directory: frontend
+        run: bash ../.github/scripts/executar-com-anotacoes.sh node e2e/detalhe.mjs
+      - name: Interface — carrossel
+        working-directory: frontend
+        run: bash ../.github/scripts/executar-com-anotacoes.sh node e2e/carrossel.mjs
+      - name: Acessibilidade — axe-core
+        working-directory: frontend
+        run: bash ../.github/scripts/executar-com-anotacoes.sh node e2e/acessibilidade.mjs
+      - name: Acessibilidade — árvore de acessibilidade
+        working-directory: frontend
+        run: bash ../.github/scripts/executar-com-anotacoes.sh node e2e/arvore-acessibilidade.mjs
+
+      - name: Encerra a aplicação
+        if: always()
+        run: docker compose down -v
