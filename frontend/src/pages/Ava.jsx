@@ -106,6 +106,9 @@ const ESTADOS = {
   pendente: { rotulo: 'não iniciada', glifo: <circle cx="12" cy="12" r="9" /> },
 }
 
+// O Figma mostra o menu do AVA até o "Módulo 6"; cursos com mais módulos (ex.: 10) exibem só os 6 primeiros aqui.
+const MAX_MODULOS_NO_MENU = 6
+
 const AULAS_INTRODUCAO = [
   { rotulo: '1.1 Introdução', estado: 'concluida' },
   { rotulo: '1.2 Boas práticas', estado: 'atual' },
@@ -119,6 +122,7 @@ function Sidebar({ curso }) {
 
   const aulas = AULAS_INTRODUCAO.filter((a) => normalizar(a.rotulo).includes(termo))
   const modulos = curso.modulos
+    .slice(0, MAX_MODULOS_NO_MENU)
     .map((m) => ({ rotulo: `${m.ordem + 1}. Módulo ${m.ordem}`, ordem: m.ordem }))
     .filter((m) => normalizar(m.rotulo).includes(termo))
   const mostrarIntroducao = termo === '' || normalizar('1. Introdução').includes(termo) || aulas.length > 0

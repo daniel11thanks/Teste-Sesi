@@ -42,7 +42,8 @@
   cursor: grabbing;
 }
 
-.carousel__track--arrastando {
+.carousel__track--arrastando,
+.carousel__track--deslizando {
   scroll-snap-type: none;
 }
 

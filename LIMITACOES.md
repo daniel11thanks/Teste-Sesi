@@ -9,6 +9,7 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Cadastro, edição e exclusão de cursos | **Não feito** — o enunciado dispensa. Um painel administrativo seria a evolução natural. |
 | Integração com o Moodle | **Parcial.** Só há uma **exportação em CSV** (`GET /api/cursos/exportacao/moodle.csv`, ver README 7.1): sem conexão com um Moodle em execução, **não testada em um Moodle real** e sem exportar módulos, aulas e FAQ. Não está no front-end porque a aplicação é a área do aluno e exportar é uma tarefa administrativa; a rota é aberta porque o enunciado não prevê login |
 | Teste manual com **leitor de tela real** | **Feito em parte.** Teste exploratório com o **Narrador do Windows** (Tab, títulos, campos e setas), que leu o conteúdo percorrido sem problemas relatados. A execução item a item do roteiro ([docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md)) não foi registrada e não houve teste com NVDA nem VoiceOver. Há ainda a conferência automática da árvore de acessibilidade e a auditoria axe-core (0 violações). |
+| Desempenho no celular (Lighthouse) | **Parcial.** Páginas inicial e catálogo em 75 e 86 de desempenho no celular simulado (LCP de 4 a 5 s); o restante ficou em 99 ou 100. Melhorar exigiria alterar o carregamento da imagem do topo e arriscaria o visual do Figma (ver README 5.4) |
 | Pipeline de integração contínua (CI) | **Feito** (GitHub Actions: testes do back-end, lint e build do front-end e testes de interface/acessibilidade contra a aplicação em Docker). Limite: não faz deploy, que continua sendo do autoDeploy do Render, e o resultado do CI não bloqueia esse deploy |
 | Testes unitários de componentes React isolados | **Não feitos** — a cobertura do front-end é de interface, de ponta a ponta. |
 
@@ -36,7 +37,7 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Matrícula desabilitada para cursos “Em breve” e “Encerrado” | Regra de negócio que o protótipo não prevê |
 | Barra preta flutuante de matrícula (página de detalhes do curso): espaço extra no rodapé | No Figma, no fim da página a barra fixa passa por cima do conteúdo do rodapé e o esconde. Na aplicação o rodapé ganha um recuo (espaço extra embaixo) só nessa página, para a barra **não ficar em cima das informações do rodapé**; o foco do teclado também não fica atrás dela |
 | Destinos de links sem ação no protótipo (Área do aluno, Sobre etc.) | Apontados para páginas existentes ou âncoras |
-| AVA: um item de menu por módulo do curso, busca no menu e menu recolhível no celular; texto da aula parametrizado | Necessário para servir a qualquer curso |
+| AVA: busca no menu, menu recolhível no celular e texto da aula parametrizado. O menu mostra no máximo 6 módulos (como o Figma); cursos com mais módulos listam todos só na página de detalhes | Necessário para servir a qualquer curso |
 | Container de conteúdo com largura máxima (1212 px) | O Figma escala o quadro com a janela |
 | Medidas e cores aproximadas (extraídas de prints; frame de 1440 px assumido) | O Dev Mode do Figma não estava acessível; o hero foi calibrado pixel a pixel e as demais seções por comparação lado a lado com os prints (pode haver diferenças de poucos pixels) |
 | Cores das etiquetas “Linguagens” e “Sustentabilidade”; favicon; fotos em WebP | Não constam no protótipo / otimização de 2,6–3,8 MB para 22–99 KB |

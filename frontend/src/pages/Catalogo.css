@@ -22,6 +22,11 @@
   margin-top: 1.5rem;
 }
 
+/* Enquanto a primeira resposta não chega, reserva a altura da tela para o rodapé não pular quando os cursos aparecem. */
+.catalog__results--loading {
+  min-height: 100vh;
+}
+
 .catalog__count {
   min-height: 1.75rem;
   margin-bottom: 1rem;

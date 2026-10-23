@@ -66,6 +66,8 @@ var opcoesEstaticas = new StaticFileOptions
             cabecalhos.CacheControl = "public,max-age=31536000,immutable";
         else if (ctx.File.Name == "index.html")
             cabecalhos.CacheControl = "no-cache";
+        else
+            cabecalhos.CacheControl = "public,max-age=604800"; // fontes, ícones e imagens: sem hash no nome, 7 dias
     },
 };
 

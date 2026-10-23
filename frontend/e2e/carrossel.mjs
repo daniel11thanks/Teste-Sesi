@@ -52,7 +52,7 @@ const durante = await page.$eval(TRILHA, (t) => ({ classe: t.classList.contains(
 ok(durante.classe && durante.cursor === 'grabbing' && durante.scroll > 100, '2. durante o arrasto o carrossel acompanha o mouse e o cursor vira "mão fechada"', JSON.stringify(durante))
 await page.mouse.move(c.x - 400, c.y, { steps: 10 })
 await page.mouse.up()
-await espera(900)
+await espera(2400) // a inércia leva ~1,5 s para terminar
 ok(new URL(page.url()).pathname === '/', '4. soltar o arrasto sobre um card NÃO abre o curso', new URL(page.url()).pathname)
 if (new URL(page.url()).pathname !== '/') {
   console.log('O arrasto abriu um curso; abortando os demais cenários.')
@@ -157,6 +157,79 @@ await page.mouse.move(c.x - 300, c.y, { steps: 8 })
 await page.mouse.up({ button: 'right' })
 await espera(300)
 ok((await rolagem(page, TRILHA)) === 0, '15. arrastar com o botão direito não move o carrossel')
+await page.close()
+
+// ---- 17. inércia: depois de soltar o arrasto, a trilha continua deslizando e perde velocidade aos poucos (como no Figma)
+// Arrasta para a esquerda em `passos` movimentos espaçados por `intervalo` ms. `pausa` ms de mouse parado antes de soltar.
+async function arrastarEsquerda(p, dx, passos, intervalo, pausa = 0) {
+  const c = await centro(p, CARD2)
+  await p.mouse.move(c.x, c.y)
+  await p.mouse.down()
+  for (let i = 1; i <= passos; i++) {
+    await p.mouse.move(c.x - (dx * i) / passos, c.y)
+    await espera(intervalo)
+  }
+  if (pausa) await espera(pausa)
+  const noSoltar = await rolagem(p, TRILHA)
+  await p.mouse.up()
+  return noSoltar
+}
+const classeDeslizando = (p) => p.$eval(TRILHA, (t) => t.classList.contains('carousel__track--deslizando'))
+
+page = await abrir()
+let soltou = await arrastarEsquerda(page, 160, 10, 16)
+await espera(40)
+ok(await classeDeslizando(page), '17a. soltar em movimento: a trilha continua deslizando depois de soltar', `soltou em ${soltou}`)
+const antesDoFim = await rolagem(page, TRILHA)
+await espera(300)
+ok((await rolagem(page, TRILHA)) > antesDoFim, '17a2. e continua avançando (com a velocidade caindo) em vez de parar de repente', `${antesDoFim} -> ${await rolagem(page, TRILHA)}`)
+await espera(1800)
+ok(!(await classeDeslizando(page)) && (await assentado(page, TRILHA)), '17b. a inércia termina sozinha e a trilha assenta no início de um card')
+await page.close()
+
+page = await abrir()
+soltou = await arrastarEsquerda(page, 160, 10, 16, 250)
+await espera(40)
+ok(!(await classeDeslizando(page)), '17c. se o mouse ficou parado antes de soltar, não há inércia', `soltou em ${soltou}`)
+await page.close()
+
+page = await abrir()
+await arrastarEsquerda(page, 450, 10, 0)
+await espera(2800)
+const rapido = await rolagem(page, TRILHA)
+await page.close()
+page = await abrir()
+await arrastarEsquerda(page, 450, 10, 60)
+await espera(2800)
+const lento = await rolagem(page, TRILHA)
+ok(rapido > lento + 150, '17d. arrasto rápido vai mais longe que o lento', `rápido: ${rapido}, lento: ${lento}`)
+await page.close()
+
+page = await abrir()
+soltou = await arrastarEsquerda(page, 200, 10, 8)
+await espera(60)
+const c17 = await centro(page, CARD2)
+await page.mouse.move(c17.x, c17.y)
+await page.mouse.down()
+const seguro = await rolagem(page, TRILHA)
+await espera(500)
+const segurou = await rolagem(page, TRILHA)
+await page.mouse.up()
+ok(Math.abs(segurou - seguro) <= 330 && !(await classeDeslizando(page)), '17e. tocar na trilha enquanto desliza a segura', `ao tocar ${seguro}, 500 ms depois ${segurou}`)
+await page.close()
+
+page = await abrir()
+await arrastarEsquerda(page, 500, 10, 6)
+await espera(2500)
+const maximoTrilha = await page.$eval(TRILHA, (t) => Math.round(t.scrollWidth - t.clientWidth))
+ok((await rolagem(page, TRILHA)) === maximoTrilha && !(await classeDeslizando(page)), '17f. lançada com força, a trilha para no fim (não passa do último card) e a inércia encerra', `scrollLeft=${await rolagem(page, TRILHA)} de ${maximoTrilha}`)
+await page.close()
+
+page = await abrir()
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
+soltou = await arrastarEsquerda(page, 160, 10, 16)
+await espera(40)
+ok(!(await classeDeslizando(page)), '17g. com "reduzir movimento" ativo não há inércia', `soltou em ${soltou}`)
 await page.close()
 
 // ---- 9. no fim da rolagem o último card para a uma pequena distância da borda, igual ao espaço entre os cards

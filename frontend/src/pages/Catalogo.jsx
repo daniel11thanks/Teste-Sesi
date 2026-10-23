@@ -94,7 +94,7 @@ export default function Catalogo() {
           temFiltros={temFiltros || texto.trim() !== ''}
         />
 
-        <section className="catalog__results" aria-labelledby="resultados" aria-busy={loading}>
+        <section className={`catalog__results${loading && !data ? ' catalog__results--loading' : ''}`} aria-labelledby="resultados" aria-busy={loading}>
           <h2 id="resultados" className="sr-only">
             Resultados
           </h2>
@@ -126,8 +126,8 @@ export default function Catalogo() {
 
           {!error && cursos.length > 0 && (
             <ul className={`catalog__grid${loading ? ' catalog__grid--loading' : ''}`}>
-              {cursos.map((curso) => (
-                <CourseListCard key={curso.id} curso={curso} />
+              {cursos.map((curso, i) => (
+                <CourseListCard key={curso.id} curso={curso} prioridade={i < 2} />
               ))}
             </ul>
           )}

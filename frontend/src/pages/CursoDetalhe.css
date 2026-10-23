@@ -1,6 +1,7 @@
 .detail__state {
   padding-block: 4rem;
-  min-height: 50vh;
+  /* Ocupa a altura da tela para o rodapé não ser empurrado quando o curso chega (evita o salto do layout). */
+  min-height: 100vh;
 }
 
 /* Hero do curso */

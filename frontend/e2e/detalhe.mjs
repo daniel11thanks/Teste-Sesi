@@ -138,7 +138,7 @@ const prog = await page.$eval('[role=progressbar]', (p) => p.getAttribute('aria-
 ok(prog === '10', '14b. barra de progresso acessível (10%)', prog)
 const atual = await texto(page, '[aria-current=page]')
 ok(/1\.2 Boas práticas/.test(atual), '14c. aula atual marcada com aria-current', atual)
-ok((await page.$$eval('.ava__module', (l) => l.length)) === 10, '14d. um item de menu por módulo do curso (10)')
+ok((await page.$$eval('.ava__module', (l) => l.length)) === 6, '14d. menu do AVA limitado a 6 módulos, como no Figma (o curso tem 10)')
 
 await page.type('#ava-busca', 'modulo 3')
 await esperar(page, () => document.querySelectorAll('.ava__module').length === 1)

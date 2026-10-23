@@ -75,6 +75,10 @@ A IA propôs e implementou um endpoint que gera o CSV da ferramenta “Carregar 
 
 Um teste automatizado revelou um erro da IA no próprio gerador: o `WebUtility.HtmlEncode` do .NET converte **cada letra acentuada em entidade numérica** (`ç` vira `&#231;`), o que deixaria o CSV ilegível. Foi trocado por um escape só dos caracteres de marcação (`& < > " '`).
 
+### Auditoria Lighthouse e inércia dos carrosséis
+
+A IA mediu o site com o Lighthouse e propôs correções; o candidato impôs a regra de **não alterar o visual** do Figma, então só entraram ajustes invisíveis (reserva de altura durante o carregamento, prioridade de imagens e cache), conferidos por comparação pixel a pixel. O que arriscava o visual foi deixado de fora e registrado. Ao conferir, o candidato percebeu dois desvios que a IA não havia notado: o menu do AVA listava 10 módulos (o Figma mostra 6) e o carrossel parava na hora ao soltar o mouse (no Figma há inércia). Ambos foram corrigidos, e a inércia ganhou testes automatizados, validados por mutação (com a inércia desligada, 4 testes falham). A primeira versão da inércia parava em qualquer ponto e dava um “tranco” ao encaixar; a IA a refez para terminar exatamente no card de destino.
+
 ### Pipeline de CI (GitHub Actions)
 
 O candidato nunca havia configurado CI; a IA explicou o conceito antes e o fluxo foi combinado assim: desenvolver numa branch separada, ver o resultado e só então juntar na `main`. O workflow passou verde na primeira execução, o que não prova que ele detecta falhas; por isso foi criada uma branch descartável com dois defeitos injetados de propósito, e o CI ficou vermelho nos jobs esperados (a branch foi apagada). Como o log do Actions exige login, a IA criou um script que transforma as linhas de erro em anotações, legíveis também pela API pública.

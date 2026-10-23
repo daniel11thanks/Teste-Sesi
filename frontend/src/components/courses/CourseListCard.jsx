@@ -6,13 +6,13 @@ import StatusBadge from '../ui/StatusBadge'
 import './CourseListCard.css'
 
 /** Card do catálogo: mostra todos os campos do curso (carga horária, modalidade, público-alvo, status e data). */
-export default function CourseListCard({ curso }) {
+export default function CourseListCard({ curso, prioridade = false }) {
   const data = formatarData(curso.dataDisponibilizacao)
 
   return (
     <li className="list-card">
       <article className="list-card__article">
-        <img className="list-card__image" src={curso.imagemUrl} alt="" loading="lazy" />
+        <img className="list-card__image" src={curso.imagemUrl} alt="" loading={prioridade ? 'eager' : 'lazy'} />
 
         <div className="list-card__body">
           <div className="list-card__top">

@@ -200,6 +200,20 @@ Os testes de interface pressupõem o banco com o seed original (8 cursos) e fora
 
 Como o log completo do Actions exige login para ser lido, os scripts de teste publicam as linhas de erro como anotações (`.github/scripts/executar-com-anotacoes.sh`), visíveis no topo da execução. Verificado de propósito: uma branch descartável com dois defeitos injetados (um valor errado num teste do back-end e um texto alterado no front-end) deixou o CI vermelho nos jobs correspondentes, e a branch foi apagada em seguida.
 
+### 5.4 Desempenho (Lighthouse)
+
+Auditoria feita com o Lighthouse 12 (Chrome headless) em três páginas (inicial, catálogo e detalhe do curso), no celular (simulação de rede 4G lenta) e no desktop. Acessibilidade, boas práticas e SEO ficaram em **100 nas seis medições**, antes e depois dos ajustes. A tabela mostra a nota de **desempenho** na aplicação em Docker local, antes → depois:
+
+| Página | Celular | Desktop | Deslocamento de layout (CLS) |
+|---|---|---|---|
+| Inicial | 75 → 75 | 99 → 99 | 0,03 → 0,03 |
+| Catálogo (`/cursos`) | 86 → 86 | 86 → 99 | desktop 0,25 → 0 |
+| Detalhe (`/cursos/1`) | 61 → 80 | 74 → 99 | desktop 0,92 → 0,005; celular 0,41 → 0 |
+
+Ajustes feitos, todos **sem alterar o visual** (a página carregada foi comparada pixel a pixel, antes e depois, em 1350 px e 390 px): a área de “carregando” do catálogo e dos detalhes ocupa a altura da tela, para o rodapé não ser empurrado quando os dados chegam; as duas primeiras imagens do catálogo carregam sem espera (`loading="eager"`); e fontes, ícones e imagens sem *hash* no nome passaram a ter cache de 7 dias (os arquivos com *hash* já tinham 1 ano).
+
+O que **não** foi corrigido: no celular, a página inicial (75) e o catálogo (86) continuam com o maior elemento visível (LCP) em 4 a 5 s na rede simulada. Melhorar isso exigiria mudar o carregamento da imagem de fundo do topo, o que arriscaria o visual do Figma; também ficaram 58 KiB de JavaScript não utilizado e CSS que bloqueia a renderização. As notas do site publicado (Render, plano gratuito, com tempo de resposta maior) podem diferir das medidas localmente.
+
 ## 6. Configuração do banco
 
 - **SQLite**, por ser de código aberto, sem servidor e adequado ao volume de dados do catálogo.
@@ -331,7 +345,7 @@ O Figma só traz o layout de **desktop**; os demais tamanhos foram definidos por
 
 - **Mobile-friendly por padrão:** unidades relativas (`rem`, `%`, `clamp()`), tipografia fluida (`--fs-hero`, `--fs-h2` com `clamp`) e container com largura máxima e margens proporcionais (`--gutter`).
 - **Breakpoints:** ~**64 rem** (1024 px) e **60 rem** (960 px) — grades de 4/3 colunas passam a 2; **52 rem** (832 px) — o menu do site vira botão “hambúrguer” e o menu do AVA passa a um bloco recolhível; **40 rem / 36 rem** (640 / 576 px) — uma coluna.
-- **Carrosséis** usam rolagem horizontal com `scroll-snap`; a trilha começa alinhada ao container e “sangra” até a borda da tela, como no Figma, e funciona por toque, mouse e teclado.
+- **Carrosséis** usam rolagem horizontal com `scroll-snap`; a trilha começa alinhada ao container e “sangra” até a borda da tela, como no Figma, e funciona por toque, mouse e teclado. Com o mouse, a trilha pode ser arrastada e, como no Figma, continua deslizando por inércia ao soltar, perdendo velocidade até parar exatamente em um card (não há inércia com “reduzir movimento” ativo; no toque vale a inércia nativa do navegador).
 - **Imagens** com proporção fixa (`aspect-ratio`) e `object-fit`, e fotos em WebP otimizado (22–99 KB).
 - **Verificação:** os testes automatizados conferem a ausência de rolagem horizontal em 390 px nas telas principais, e o axe foi executado em 1440 px e 390 px.
 
@@ -384,7 +398,7 @@ Detalhes:
 | **Matrícula conforme o status** | Cursos “Em breve” mostram “Disponível em dd/mm/aaaa” e “Encerrado” mostra “Inscrições encerradas”, ambos desabilitados; o Figma só prevê “Matricule-se”. |
 | **Barra de matrícula fixa: espaço extra no rodapé** | Na página de detalhes do curso a barra preta flutuante com o botão “Matricule-se” fica fixa na base da tela. No Figma, ao chegar ao fim da página, ela passa por cima do conteúdo do rodapé (endereço, links) e o esconde. Na aplicação o rodapé ganha um espaço extra embaixo (5,5 rem) só nessa página, de modo que, no fim da rolagem, a barra fica sobre uma área vazia e **nenhuma informação do rodapé fica coberta** (acessibilidade e legibilidade). Também há `scroll-padding` para que o foco do teclado não fique escondido atrás da barra. |
 | **Destinos de links sem ação no Figma** | “Área do aluno” e “Matricule-se” levam ao AVA; “Sobre” rola até “Impacto transformador”; “Mandar uma mensagem” abre um e-mail; “Cursos populares”, “Suporte” e “Blog” levam a páginas existentes. |
-| **AVA:** menu com um item por módulo do curso (o Figma mostra 6), busca que filtra o menu e menu recolhível no celular; texto da aula parametrizado pelo curso | Necessário para servir a qualquer curso do catálogo. |
+| **AVA:** busca que filtra o menu, menu recolhível no celular e texto da aula parametrizado pelo curso. O menu mostra no máximo 6 módulos, como o Figma (os cursos com mais módulos, como o de 10, listam todos na página de detalhes e só os 6 primeiros no menu do AVA) | Necessário para servir a qualquer curso do catálogo. |
 | **Container de conteúdo com largura máxima (1212 px)** | O Figma escala o quadro com a janela; aqui o conteúdo é centralizado com largura máxima para melhor leitura em telas grandes. |
 | **Medidas e cores do Figma são aproximações** | O Dev Mode não estava acessível; as medidas foram extraídas dos prints (px do print; frame de 1440 px assumido) e as cores por amostragem de pixels (±3). O hero foi calibrado comparando pixel a pixel com a referência (diferença média < 1/255 por canal); os tamanhos de texto, as proporções das colunas e os espaçamentos das demais seções foram calibrados depois, comparando cada print do Figma com a aplicação renderizada (imagens lado a lado e medição de larguras de texto). |
 | **Cores das etiquetas “Linguagens” e “Sustentabilidade”** | Não aparecem no protótipo; escolhidas por nós. |
