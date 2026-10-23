@@ -10,4 +10,15 @@ export default defineConfig({
       '/api': 'http://localhost:5080',
     },
   },
+  // Testes unitários (Vitest): funções, hooks e componentes isolados, sem navegador nem API.
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+    include: ['src/**/*.test.{js,jsx}'],
+    css: false,
+  },
+  // O Vitest 3 ainda compila JSX com o esbuild: pede o runtime automático (sem import de React em cada arquivo).
+  esbuild: {
+    jsx: 'automatic',
+  },
 })

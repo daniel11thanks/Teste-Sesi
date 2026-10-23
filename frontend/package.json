@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "preview": "vite preview",
     "test:e2e": "node e2e/catalogo.mjs && node e2e/detalhe.mjs && node e2e/carrossel.mjs",
     "test:a11y": "node e2e/acessibilidade.mjs",
@@ -18,12 +20,17 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "axe-core": "^4.14.0",
+    "jsdom": "^29.1.1",
     "oxlint": "^1.88.0",
     "puppeteer-core": "^25.16.0",
-    "vite": "^8.3.4"
+    "vite": "^8.3.4",
+    "vitest": "^3.2.7"
   }
 }

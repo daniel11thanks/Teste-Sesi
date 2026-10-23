@@ -79,6 +79,10 @@ Um teste automatizado revelou um erro da IA no próprio gerador: o `WebUtility.H
 
 A IA mediu o site com o Lighthouse e propôs correções; o candidato impôs a regra de **não alterar o visual** do Figma, então só entraram ajustes invisíveis (reserva de altura durante o carregamento, prioridade de imagens e cache), conferidos por comparação pixel a pixel. O que arriscava o visual foi deixado de fora e registrado. Ao conferir, o candidato percebeu dois desvios que a IA não havia notado: o menu do AVA listava 10 módulos (o Figma mostra 6) e o carrossel parava na hora ao soltar o mouse (no Figma há inércia). Ambos foram corrigidos, e a inércia ganhou testes automatizados, validados por mutação (com a inércia desligada, 4 testes falham). A primeira versão da inércia parava em qualquer ponto e dava um “tranco” ao encaixar; a IA a refez para terminar exatamente no card de destino.
 
+### Testes unitários do front-end (Vitest)
+
+Era a única lacuna que o próprio README admitia, e o candidato pediu para fechá-la. A IA escreveu 68 testes e os validou por mutação (quebrou o código de propósito em quatro pontos e conferiu que os testes falham). Um erro da IA no caminho: os testes de componentes falharam com “React is not defined”, porque o Vitest 3 compilava o JSX com o esbuild sem o runtime automático; foi preciso configurar isso explicitamente. O teste mais valioso é a regressão do bug da busca atrasada que apagava filtros, que antes só era pego pelo teste de interface.
+
 ### Pipeline de CI (GitHub Actions)
 
 O candidato nunca havia configurado CI; a IA explicou o conceito antes e o fluxo foi combinado assim: desenvolver numa branch separada, ver o resultado e só então juntar na `main`. O workflow passou verde na primeira execução, o que não prova que ele detecta falhas; por isso foi criada uma branch descartável com dois defeitos injetados de propósito, e o CI ficou vermelho nos jobs esperados (a branch foi apagada). Como o log do Actions exige login, a IA criou um script que transforma as linhas de erro em anotações, legíveis também pela API pública.

@@ -179,7 +179,16 @@ dotnet test           # 90 testes xUnit
 
 Cobrem, pela API real em memória: listagem, pesquisa sem acentos/maiúsculas, cada filtro isolado e combinado, valores inválidos (400), detalhe, 404 em JSON, compressão, a normalização da busca, os mínimos do enunciado no seed (≥ 6 cursos, ≥ 3 categorias, ≥ 2 modalidades, ≥ 3 status), idempotência do seed, as migrations (incluindo a migration de dados aplicada a um banco “antigo”) e a exportação para o Moodle (cabeçalho, escape de campos lido por um leitor de CSV, mapeamento, filtros e HTML do resumo). Foi feita também uma verificação por mutação: defeitos injetados de propósito (busca sem normalização, filtros ignorados, 400 removido, escape do CSV removido, todos os cursos visíveis) são detectados pelos testes.
 
-**Front-end** — com a API e o `npm run dev` rodando (ou `BASE_URL=http://localhost:8080` apontando para o container) e o Google Chrome instalado (caminho alterável com `CHROME_PATH`):
+**Front-end, testes unitários** (Vitest + Testing Library + jsdom; não precisam de navegador, API nem Docker):
+
+```bash
+cd frontend
+npm test              # 68 testes unitários, ~10 s
+```
+
+Cobrem as funções de formatação e busca (`formatar`, `categorias`), o cliente da API (montagem da URL sem filtros vazios, tratamento de 400/404/5xx, falha de rede e cancelamento), os hooks `useAsync` e `useDocumentTitle`, os componentes `Accordion`, `Button`, `StatusBadge`, `CategoryTag` e os estados de carregamento, erro e vazio, e a página do catálogo com a API simulada (filtros lidos da URL, pausa na digitação, “Limpar filtros”, singular/plural, erro com nova tentativa). Há um teste de **regressão** do bug em que a busca atrasada apagava o filtro escolhido nesse meio-tempo. Foi feita verificação por mutação: restaurar esse bug, deixar o plural fixo, tornar o acordeão exclusivo ou não cancelar a requisição anterior faz testes falharem. O carrossel (arrasto e inércia) não tem teste unitário, pois depende de layout real; é coberto pelos testes de interface.
+
+**Front-end, testes de interface** — com a API e o `npm run dev` rodando (ou `BASE_URL=http://localhost:8080` apontando para o container) e o Google Chrome instalado (caminho alterável com `CHROME_PATH`):
 
 ```bash
 cd frontend
@@ -195,7 +204,7 @@ Os testes de interface pressupõem o banco com o seed original (8 cursos) e fora
 **Integração contínua (GitHub Actions)** — `.github/workflows/ci.yml` roda a cada push na `main` e em pull requests, numa máquina Linux limpa, com três jobs em paralelo:
 
 1. **Back-end:** os 90 testes xUnit (.NET 10);
-2. **Front-end:** lint e build de produção;
+2. **Front-end:** lint, os 68 testes unitários (Vitest) e build de produção;
 3. **Interface e acessibilidade:** sobe a aplicação inteira com `docker compose up --build` (o mesmo caminho da produção) e roda, contra ela, os testes de interface (catálogo, detalhes, carrossel), a auditoria axe-core e a árvore de acessibilidade, com o Chrome da própria máquina.
 
 Como o log completo do Actions exige login para ser lido, os scripts de teste publicam as linhas de erro como anotações (`.github/scripts/executar-com-anotacoes.sh`), visíveis no topo da execução. Verificado de propósito: uma branch descartável com dois defeitos injetados (um valor errado num teste do back-end e um texto alterado no front-end) deixou o CI vermelho nos jobs correspondentes, e a branch foi apagada em seguida.
@@ -414,7 +423,7 @@ Detalhes:
 - **Páginas de apoio inexistentes:** Termos de Uso, Política de Privacidade, Blog etc. não têm conteúdo.
 - **Banco SQLite:** adequado a este volume e a uma instância; não é indicado para várias réplicas ou escrita concorrente. No plano gratuito do Render é recriado a cada início.
 - **Hospedagem gratuita hiberna** após inatividade (primeira resposta lenta).
-- **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. A CI roda os testes a cada push, mas não há testes unitários dos componentes React isolados (a cobertura do front-end é de interface, de ponta a ponta).
+- **Testes:** o back-end tem 90 testes xUnit; o front-end tem testes de interface (Puppeteer), axe-core e árvore de acessibilidade, que dependem do Chrome e dos serviços rodando. O front-end também tem 68 testes unitários (Vitest). A CI roda tudo a cada push, exceto o carrossel (arrasto e inércia), que só tem teste de interface por depender de layout real.
 - **Acessibilidade:** auditoria automática, conferência da árvore de acessibilidade e testes de teclado, além de um teste **exploratório** com o Narrador do Windows. A execução **item a item** do roteiro com leitor de tela (`docs/teste-leitor-de-tela.md`) não foi registrada, e não houve teste com NVDA nem VoiceOver.
 - **Dados 100% fictícios**, inclusive depoimentos, estatísticas e endereços.
 

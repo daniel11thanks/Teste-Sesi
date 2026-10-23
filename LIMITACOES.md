@@ -11,7 +11,7 @@ Entregável 9 da atividade prática. Este arquivo resume as limitações, os ite
 | Teste manual com **leitor de tela real** | **Feito em parte.** Teste exploratório com o **Narrador do Windows** (Tab, títulos, campos e setas), que leu o conteúdo percorrido sem problemas relatados. A execução item a item do roteiro ([docs/teste-leitor-de-tela.md](docs/teste-leitor-de-tela.md)) não foi registrada e não houve teste com NVDA nem VoiceOver. Há ainda a conferência automática da árvore de acessibilidade e a auditoria axe-core (0 violações). |
 | Desempenho no celular (Lighthouse) | **Parcial.** Páginas inicial e catálogo em 75 e 86 de desempenho no celular simulado (LCP de 4 a 5 s); o restante ficou em 99 ou 100. Melhorar exigiria alterar o carregamento da imagem do topo e arriscaria o visual do Figma (ver README 5.4) |
 | Pipeline de integração contínua (CI) | **Feito** (GitHub Actions: testes do back-end, lint e build do front-end e testes de interface/acessibilidade contra a aplicação em Docker). Limite: não faz deploy, que continua sendo do autoDeploy do Render, e o resultado do CI não bloqueia esse deploy |
-| Testes unitários de componentes React isolados | **Não feitos** — a cobertura do front-end é de interface, de ponta a ponta. |
+| Testes unitários do front-end | **Feitos** (Vitest, 68 testes: utilitários, API, hooks, componentes básicos e a página do catálogo). Limite: o carrossel, a página inicial, a de detalhes e o AVA só têm teste de interface (Puppeteer), não unitário |
 
 ## Limitações conhecidas
 

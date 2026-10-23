@@ -1,6 +1,6 @@
 # Integração contínua: a cada push e pull request, roda os testes do projeto em uma máquina Linux limpa.
 #   1. Back-end:  90 testes xUnit (.NET 10)
-#   2. Front-end: lint e build (React + Vite)
+#   2. Front-end: lint, testes unitários (Vitest) e build (React + Vite)
 #   3. Interface: sobe a aplicação inteira com docker compose (o mesmo caminho da produção) e roda os testes de
 #                 interface, o axe-core e a conferência da árvore de acessibilidade, com o Chrome da própria máquina.
 name: CI
@@ -48,6 +48,8 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: Lint
         run: bash ../.github/scripts/executar-com-anotacoes.sh npm run lint
+      - name: Testes unitários (Vitest)
+        run: bash ../.github/scripts/executar-com-anotacoes.sh npm test
       - name: Build de produção
         run: bash ../.github/scripts/executar-com-anotacoes.sh npm run build
 
