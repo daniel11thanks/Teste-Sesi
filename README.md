@@ -86,6 +86,28 @@ Não há cadastro, edição ou exclusão de cursos (o enunciado dispensa) nem in
 └───────────────────────────────────────────────────────────────┘
 ```
 
+Do código à aplicação publicada (build da imagem Docker, CI e deploy):
+
+```mermaid
+flowchart LR
+    dev["Desenvolvedor<br/>git push na main"] --> gh["GitHub<br/>repositório Teste-Sesi"]
+
+    gh --> ci["GitHub Actions (CI)<br/>1. back-end: 90 testes xUnit<br/>2. front-end: lint, 68 testes Vitest, build<br/>3. docker compose + testes de interface e axe"]
+    gh -- "autoDeploy a cada push" --> render["Render<br/>docker build do Dockerfile"]
+
+    subgraph imagem ["Dockerfile multi-estágio (uma única imagem)"]
+        direction LR
+        front["node:22<br/>npm ci + vite build<br/>gera frontend/dist"] --> api["dotnet sdk 10<br/>publica a API"]
+        api --> final["aspnet 10 (imagem final)<br/>API + wwwroot com o React<br/>SQLite em /data"]
+    end
+
+    render --> imagem
+    final --> app["catalogo-sesi.onrender.com<br/>/ (React) · /api · /swagger<br/>health check: /api/health"]
+    usuario["Navegador do usuário"] --> app
+```
+
+O CI não bloqueia o deploy: os dois partem do mesmo `push`, de forma independente (ver [limitações](LIMITACOES.md)). A mesma imagem roda localmente com `docker compose up --build`.
+
 Decisões principais:
 
 - **Uma única unidade de implantação.** A API .NET serve também o front-end compilado (`wwwroot`). Assim há um só container, **não há CORS em produção** e a execução local é um comando.
